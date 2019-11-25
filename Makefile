@@ -60,26 +60,3 @@ docker.bot.restart: docker.bot.stop docker.up
 
 docker.volumes.remove: docker.down
 	docker volume rm $(current_dir)_mongo_volume
-
-##############################
-###### HEROKU COMMANDS ######
-#############################
-heroku.prod.add_remote:
-	heroku git:remote -a jerimumhsbot
-	git remote rename heroku heroku-prod
-
-heroku.prod.deploy:
-	git push heroku-prod master
-
-heroku.prod.purge_cache:
-	heroku repo:purge_cache -a jerimumhsbot
-
-heroku.dev.add_remote:
-	heroku git:remote -a jerimumhstestbot
-	git remote rename heroku heroku-dev
-
-heroku.dev.deploy:
-	git push heroku-dev dev:master
-
-heroku.dev.purge_cache:
-	heroku repo:purge_cache -a jerimumhstestbot
