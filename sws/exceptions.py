@@ -1,0 +1,4 @@
+
+
+class DuplicatedSessionError(Exception):
+    pass
