@@ -1,5 +1,7 @@
 import websocket
 
+from sws import SessionUpdateMessage
+
 
 class SessionWebSocket:
     def __init__(self, url):
@@ -13,7 +15,7 @@ class SessionWebSocket:
 
     @staticmethod
     def on_message(ws, message):
-        print(SessionWebSocket.parse_message(message))
+        print(SessionWebSocket.parse_message(ws.url, message))
 
     @staticmethod
     def on_error(ws, error):
@@ -24,8 +26,8 @@ class SessionWebSocket:
         print("### closed ###")
 
     @staticmethod
-    def parse_message(message):
-        return message
+    def parse_message(url, message):
+        return SessionUpdateMessage.from_data(url, message)
 
     def run_forever(self):
         self.ws.run_forever()
