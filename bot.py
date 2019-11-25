@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class JackBot(BotTelegramCore):
     """Bot Controller"""
 
-    _chat_id = config('JACK_CHAT_ID', default=123, cast=int)
+    _chat_id = config('JACK_CHAT_ID', default='123')
 
     def __init__(self):
         super(JackBot, self).__init__()
