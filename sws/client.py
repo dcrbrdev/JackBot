@@ -1,10 +1,21 @@
+from threading import Thread
+
 from websocket import create_connection
 
-from sws import SessionUpdateMessage
+from bot import JackBot
+from sws.message import SessionUpdateMessage
+from sws.exceptions import DuplicatedSessionError
 
 
-class SessionWebSocket:
+class SessionWebSocket(Thread):
+    sessions = {}
+
     def __init__(self, name, url):
+        super(SessionWebSocket, self).__init__()
+        if SessionWebSocket.sessions.get(url):
+            raise DuplicatedSessionError("A session with this urls is already created")
+        SessionWebSocket.sessions[url] = self
+
         self.name = name
         self.url = url
         self.ws = create_connection(self.url)
@@ -15,12 +26,24 @@ class SessionWebSocket:
     def recv(self):
         msg = SessionUpdateMessage.from_data(self.name, self.ws.recv())
         print(msg)
+        JackBot.instance().send_message(msg.__str__())
 
-    def run_forever(self):
+    def run(self):
         while True:
             self.recv()
+
+    @classmethod
+    def start_all(cls):
+        for session in cls.sessions.values():
+            session.start()
+
+    @classmethod
+    def join_all(cls):
+        for session in cls.sessions.values():
+            session.join()
 
 
 if __name__ == "__main__":
     sws = SessionWebSocket("Decred Brasil", "wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList")
-    sws.run_forever()
+    sws.start_all()
+    sws.join_all()
