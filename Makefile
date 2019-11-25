@@ -13,10 +13,7 @@ test:
 	pytest
 
 coverage:
-	pytest --cov=commands
-	pytest --cov=core --cov-append
-	pytest --cov=db --cov-append
-	pytest --cov=bot --cov-append
+	pytest --cov=sws --cov=db --cov=bot
 	coverage report
 	coverage xml
 
