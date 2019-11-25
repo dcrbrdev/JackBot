@@ -17,8 +17,8 @@ coverage:
 	coverage report
 	coverage xml
 
-coverage.codacy: coverage
-	python-codacy-coverage -r coverage.xml -t $$CODACY_PROJECT_TOKEN
+coverage.codacy:coverage
+	python-codacy-coverage -r coverage.xml -t ${CODACY_PROJECT_TOKEN}
 
 flake8:
 	flake8
