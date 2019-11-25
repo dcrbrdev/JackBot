@@ -1,1 +1,1 @@
-from sws.client import SessionWebSocket
+from sws.client import SessionWebSocket  # noqa F401
