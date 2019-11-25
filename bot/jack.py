@@ -2,8 +2,8 @@ import logging
 
 from decouple import config
 
-from core import BotTelegramCore
-from commands import handlers
+from bot.core import BotTelegramCore
+from bot.commands import handlers
 
 
 logging.basicConfig(
