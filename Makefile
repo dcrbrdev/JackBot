@@ -7,7 +7,10 @@ config.env:
 ### LOCAL PYTHON COMMANDS ###
 #############################
 run:
-	python run.py
+	python -m bot.jack
+
+run.worker:
+	python -m sws.client
 
 test:
 	pytest

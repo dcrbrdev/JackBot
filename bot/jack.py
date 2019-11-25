@@ -37,5 +37,5 @@ class JackBot(BotTelegramCore):
         super().send_message(text, chat_id or cls._chat_id, parse_mode)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     JackBot.instance().run()

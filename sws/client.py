@@ -2,7 +2,7 @@ from threading import Thread
 
 from websocket import create_connection
 
-from bot import JackBot
+from bot.jack import JackBot
 from sws.message import SessionUpdateMessage
 from sws.exceptions import DuplicatedSessionError
 
