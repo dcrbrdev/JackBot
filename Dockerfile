@@ -6,6 +6,6 @@ COPY requirements.txt requirements.txt
 COPY requirements-dev.txt requirements-dev.txt
 RUN pip install -r requirements-dev.txt
 
-WORKDIR /app
+WORKDIR /bot
 
-COPY . /app/
+COPY . /bot/

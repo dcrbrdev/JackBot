@@ -13,13 +13,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-class JerimumBot(BotTelegramCore):
+class JackBot(BotTelegramCore):
     """Bot Controller"""
 
-    _chat_id = config('JERIMUM_CHAT_ID', default=-1001088768449, cast=int)
+    _chat_id = config('JACK_CHAT_ID', default=123, cast=int)
 
     def __init__(self):
-        super(JerimumBot, self).__init__()
+        super(JackBot, self).__init__()
         self._handlers_configured = False
         self.config_handlers()
 
@@ -38,4 +38,4 @@ class JerimumBot(BotTelegramCore):
 
 
 if __name__ == '__main__':
-    JerimumBot.instance().run()
+    JackBot.instance().run()

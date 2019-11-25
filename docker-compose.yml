@@ -22,5 +22,5 @@ services:
         depends_on:
             - mongo
         volumes:
-            - .:/app
+            - .:/bot
         env_file: .env
