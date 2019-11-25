@@ -1,12 +1,36 @@
-from websocket import WebSocket, create_connection
+import websocket
 
 
-class MyWebSocket(WebSocket):
-    def recv_frame(self):
-        frame = super().recv_frame()
-        print('yay! I got this frame: ', frame)
-        return frame
+class SessionWebSocket:
+    def __init__(self, url):
+        self.url = url
+        self.ws = websocket.WebSocketApp(
+            self.url,
+            on_message=self.on_message,
+            on_error=self.on_error,
+            on_close=self.on_close
+        )
+
+    @staticmethod
+    def on_message(ws, message):
+        print(SessionWebSocket.parse_message(message))
+
+    @staticmethod
+    def on_error(ws, error):
+        print(error)
+
+    @staticmethod
+    def on_close(ws):
+        print("### closed ###")
+
+    @staticmethod
+    def parse_message(message):
+        return message
+
+    def run_forever(self):
+        self.ws.run_forever()
 
 
-ws = create_connection("wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList", class_=MyWebSocket)
-
+if __name__ == "__main__":
+    sws = SessionWebSocket("wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList")
+    sws.run_forever()
