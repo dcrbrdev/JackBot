@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from sws import SessionUpdateMessage
+from sws.message import SessionUpdateMessage
 
 
 DATA = '[{"name":"c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86",' \
