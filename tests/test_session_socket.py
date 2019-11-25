@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from sws import SessionWebSocket
+# from sws import SessionWebSocket
 
 
 class SessionWebSocketTestCase(TestCase):

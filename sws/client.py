@@ -13,7 +13,8 @@ class SessionWebSocket(Thread):
     def __init__(self, name, url):
         super(SessionWebSocket, self).__init__()
         if SessionWebSocket.sessions.get(url):
-            raise DuplicatedSessionError("A session with this urls is already created")
+            raise DuplicatedSessionError("A session with "
+                                         "this urls is already created")
         SessionWebSocket.sessions[url] = self
 
         self.name = name
@@ -44,7 +45,10 @@ class SessionWebSocket(Thread):
 
 
 if __name__ == "__main__":
-    SessionWebSocket("Decred Brasil", "wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList")
-    SessionWebSocket("Decred Voting", "wss://matcher.decredvoting.com:8477/watchWaitingList")
+    SessionWebSocket("Decred Brasil",
+                     "wss://split-ticket-svc.stake."
+                     "decredbrasil.com:8477/watchWaitingList")
+    SessionWebSocket("Decred Voting",
+                     "wss://matcher.decredvoting.com:8477/watchWaitingList")
     SessionWebSocket.start_all()
     SessionWebSocket.join_all()

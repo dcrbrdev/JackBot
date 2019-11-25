@@ -15,7 +15,8 @@ class SessionUpdateMessage:
         if not isinstance(self.svsp, str):
             raise TypeError(f'Svsp value {self.svsp} is not a valid string')
         if not isinstance(self.session_name, str):
-            raise TypeError(f'Session Name value {self.session_name} is not a valid string')
+            raise TypeError(f'Session Name value '
+                            f'{self.session_name} is not a valid string')
         if not isinstance(self.amounts, list):
             raise TypeError(f'Amounts value {self.amounts} is not a list')
         else:
