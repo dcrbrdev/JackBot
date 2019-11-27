@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from decouple import config
 from telegram.ext import Updater, Handler
-from telegram import Update
+from telegram import Update, ParseMode
 
 
 logging.basicConfig(
@@ -22,10 +22,10 @@ class BotTelegramCore(ABC):
         return cls._instance
 
     def __init__(self):
-        logging.info('Inicializando o bot...')
+        logger.info('Inicializando o bot...')
         self.token = config('BOT_TOKEN')
-        self.port = config('PORT', default=8443, cast=int)
-        self.server_url = config('SERVER_URL')
+        self.port = config('PORT', default=-1, cast=int)
+        self.server_url = config('SERVER_URL', default='?MY_CUSTOM_URL?')
 
         self._updater = Updater(self.token)
         self._running = False
@@ -70,12 +70,12 @@ class BotTelegramCore(ABC):
         instance._updater.bot.send_message(
             chat_id=chat_id,
             text=text,
-            parse_mode=parse_mode
+            parse_mode=parse_mode or ParseMode.MARKDOWN
         )
 
     def add_handler(self, handler: Handler):
         if not isinstance(handler, Handler):
-            raise ValueError("Handler deve ser do tipo Handler!")
+            raise ValueError("Handler function must be of type Handler!")
         self._updater.dispatcher.add_handler(handler)
 
     def add_error_handler(self, handler):
@@ -92,22 +92,12 @@ class BotTelegramCore(ABC):
 
         self._updater.bot.set_webhook(f"{self.server_url}/{self.token}")
 
-        logging.info('Bot está rodando como um webserver!')
+        logger.info('JackBot is running as a webserver!')
         self._updater.idle()
 
     def run_cmd(self):
         """Start the bot as a python script loop"""
         self._updater.start_polling()
 
-        logging.info('Bot está rodando como um script python!')
+        logger.info('JackBot is running as python script!')
         self._updater.idle()
-
-    def run(self):
-        """Start the bot as a python script loop"""
-        if not self._running:
-            self._updater.start_polling()
-
-            logging.info('Bot está rodando como um script python!')
-            self._running = True
-        else:
-            logging.info('Bot já está rodando!')

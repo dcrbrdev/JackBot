@@ -18,7 +18,19 @@ services:
             context: .
             dockerfile: Dockerfile
         container_name: bot
-        command: python run.py
+        command: python -m bot.jack
+        depends_on:
+            - mongo
+        volumes:
+            - .:/bot
+        env_file: .env
+
+    bot-worker:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: bot-worker
+        command: python -m sws.client
         depends_on:
             - mongo
         volumes:
