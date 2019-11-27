@@ -9,6 +9,7 @@ from sws.exceptions import DuplicatedSessionError
 
 class SessionWebSocket(Thread):
     sessions = {}
+    TEN_YEARS_TIMEOUT = 60 * 60 * 24 * 365 * 10
 
     def __init__(self, name, url):
         super(SessionWebSocket, self).__init__()
@@ -19,7 +20,7 @@ class SessionWebSocket(Thread):
 
         self.name = name
         self.url = url
-        self.ws = create_connection(self.url)
+        self.ws = create_connection(self.url, timeout=self.TEN_YEARS_TIMEOUT)
 
     def parse_message(self, message):
         return SessionUpdateMessage.from_data(self.name, message)
