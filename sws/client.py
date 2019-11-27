@@ -30,9 +30,6 @@ class SessionWebSocket(Thread):
         self.url = url
         self.ws = WebSocketApp(self.url, on_message=self.on_message, on_error=self.on_error)
 
-    def parse_message(self, message):
-        return SessionUpdateMessage.from_data(self.name, message)
-
     def run(self):
         self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
 
