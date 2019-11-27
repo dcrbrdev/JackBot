@@ -1,5 +1,7 @@
 from json import loads
 
+from sws.exceptions import InvalidSessionMessageError
+
 
 class Amount:
     ATOM_DECIMALS = 100000000
@@ -17,11 +19,11 @@ class Amount:
     @value.setter
     def value(self, value: int):
         if not isinstance(value, int):
-            raise TypeError(f"{value} {type(value)} não é inteiro")
+            raise TypeError(f"{value} {type(value)} is not int")
         self._value = value
 
 
-class SessionMessage:
+class SessionData:
     def __init__(self, session_name, amounts):
         self.session_name = session_name
         self.amounts = []
@@ -51,21 +53,24 @@ class SessionMessage:
                     raise TypeError(f"Amount value {amount} is not a Amount")
 
 
-class SessionUpdateMessage:
-    def __init__(self, sws_name, msgs=None):
+class UpdateMessage:
+    def __init__(self, sws_name):
         self.sws_name = sws_name
-        self._msgs = msgs or []
+        self._data = []
         self.validate()
 
     def __str__(self):
         string = f"<b>{self.sws_name}</b>\n\n"
-        for index, msg in enumerate(self._msgs):
+        for index, msg in enumerate(self._data):
             string += f"<code>{msg}</code>"
-            string += "\n\n" if index != len(self._msgs)-1 else ""
+            string += "\n\n" if index != len(self._data) - 1 else ""
         return string
 
-    def add_msg(self, msg: SessionMessage):
-        self._msgs.append(msg)
+    def add_data(self, data: SessionData):
+        if not isinstance(data, SessionData):
+            raise InvalidSessionMessageError(f"{data} {type(data)} "
+                                             f"is not a {SessionData} instance")
+        self._data.append(data)
 
     def validate(self):
         if not isinstance(self.sws_name, str):
@@ -76,8 +81,8 @@ class SessionUpdateMessage:
         json_data = loads(data)
         instance = cls(sws_name)
         for _data in json_data:
-            instance.add_msg(
-                SessionMessage(session_name=_data.get("name"),
-                               amounts=_data.get("amounts"))
+            instance.add_data(
+                SessionData(session_name=_data.get("name"),
+                            amounts=_data.get("amounts"))
             )
         return instance
