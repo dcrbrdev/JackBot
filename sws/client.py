@@ -63,7 +63,7 @@ class SessionWebSocket(Thread):
     def on_error(ws, error: Exception):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
         sws.ignore_next_update = True
-        logger.exception(error)
+        logger.warning(error)
 
     @classmethod
     def start_all(cls):
