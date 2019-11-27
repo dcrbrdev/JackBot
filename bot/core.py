@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from decouple import config
 from telegram.ext import Updater, Handler
-from telegram import Update
+from telegram import Update, ParseMode
 
 
 logging.basicConfig(
@@ -70,7 +70,7 @@ class BotTelegramCore(ABC):
         instance._updater.bot.send_message(
             chat_id=chat_id,
             text=text,
-            parse_mode=parse_mode
+            parse_mode=parse_mode or ParseMode.MARKDOWN
         )
 
     def add_handler(self, handler: Handler):
