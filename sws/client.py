@@ -1,3 +1,4 @@
+import logging
 from threading import Thread
 
 from websocket import WebSocketApp
@@ -5,6 +6,13 @@ from websocket import WebSocketApp
 from bot.jack import JackBot
 from sws.message import SessionUpdateMessage
 from sws.exceptions import DuplicatedSessionError, SessionWebSocketNotFoundError
+
+
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 
 class SessionWebSocket(Thread):
@@ -38,12 +46,14 @@ class SessionWebSocket(Thread):
     def on_message(ws: WebSocketApp, msg):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
         msg = SessionUpdateMessage.from_data(sws.name, msg)
+        logger.info(f'SessionUpdateMessage received from {msg.sws_name}')
         JackBot.instance().send_message(f'{msg}', parse_mode='HTML')
 
     @staticmethod
-    def on_error(ws, error):
+    def on_error(ws, error: Exception):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
-        print(f'A error ocurred on {sws}:\n{error}')
+        logger.error(f'A error ocurred on {sws}:\n')
+        logger.exception(error)
 
     @classmethod
     def start_all(cls):

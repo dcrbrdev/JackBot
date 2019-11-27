@@ -22,7 +22,7 @@ class BotTelegramCore(ABC):
         return cls._instance
 
     def __init__(self):
-        logging.info('Inicializando o bot...')
+        logger.info('Inicializando o bot...')
         self.token = config('BOT_TOKEN')
         self.port = config('PORT', default=8443, cast=int)
         self.server_url = config('SERVER_URL')
@@ -92,14 +92,14 @@ class BotTelegramCore(ABC):
 
         self._updater.bot.set_webhook(f"{self.server_url}/{self.token}")
 
-        logging.info('Bot está rodando como um webserver!')
+        logger.info('Bot está rodando como um webserver!')
         self._updater.idle()
 
     def run_cmd(self):
         """Start the bot as a python script loop"""
         self._updater.start_polling()
 
-        logging.info('Bot está rodando como um script python!')
+        logger.info('Bot está rodando como um script python!')
         self._updater.idle()
 
     def run(self):
@@ -107,7 +107,7 @@ class BotTelegramCore(ABC):
         if not self._running:
             self._updater.start_polling()
 
-            logging.info('Bot está rodando como um script python!')
+            logger.info('Bot está rodando como um script python!')
             self._running = True
         else:
-            logging.info('Bot já está rodando!')
+            logger.info('Bot já está rodando!')

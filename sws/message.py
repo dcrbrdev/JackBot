@@ -52,13 +52,13 @@ class SessionMessage:
 
 
 class SessionUpdateMessage:
-    def __init__(self, svsp, msgs=None):
-        self.svsp = svsp
+    def __init__(self, sws_name, msgs=None):
+        self.sws_name = sws_name
         self._msgs = msgs or []
         self.validate()
 
     def __str__(self):
-        string = f"<b>{self.svsp}</b>\n\n"
+        string = f"<b>{self.sws_name}</b>\n\n"
         for index, msg in enumerate(self._msgs):
             string += f"<code>{msg}</code>"
             string += "\n\n" if index != len(self._msgs)-1 else ""
@@ -68,13 +68,13 @@ class SessionUpdateMessage:
         self._msgs.append(msg)
 
     def validate(self):
-        if not isinstance(self.svsp, str):
-            raise TypeError(f"Svsp value {self.svsp} is not a valid string")
+        if not isinstance(self.sws_name, str):
+            raise TypeError(f"SWS name {self.sws_name} is not a valid string")
 
     @classmethod
-    def from_data(cls, svsp, data):
+    def from_data(cls, sws_name, data):
         json_data = loads(data)
-        instance = cls(svsp)
+        instance = cls(sws_name)
         for _data in json_data:
             instance.add_msg(
                 SessionMessage(session_name=_data.get("name"),

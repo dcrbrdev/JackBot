@@ -15,7 +15,7 @@ class SessionUpdateMessageTestCase(TestCase):
             'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
             [1000000000, 2000000000]
         )
-        self.assertEqual(msg.svsp, 'test')
+        self.assertEqual(msg.sws_name, 'test')
         self.assertEqual(msg.session_name, 'c17b1828e97bf66abd5329e73755173b43'
                                            'b98e18ebd4b84b19a016781d8cfa86')
         self.assertEqual(msg.amounts, [1000000000, 2000000000])
