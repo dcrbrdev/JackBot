@@ -15,6 +15,7 @@ class SessionDataTestCase(TestCase):
         self.assertEqual(instance.amounts[1].value, 20.0)
 
     def test_validate(self):
+        SessionData(session_name='test', amounts=[1000000000, 2000000000])
         self.assertRaises(TypeError, SessionData,
                           session_name=1, amounts=[])
         self.assertRaises(TypeError, SessionData,

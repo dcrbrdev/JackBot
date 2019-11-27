@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from sws.message import UpdateMessage
+from sws.message import UpdateMessage, SessionData, Amount
 
 
 DATA = '[{"name":"c17b1828e97bf66abd5329e7' \
@@ -8,146 +8,50 @@ DATA = '[{"name":"c17b1828e97bf66abd5329e7' \
        '"amounts":[1000000000,2000000000]}]\n'
 
 
-class SessionUpdateMessageTestCase(TestCase):
+class UpdateMessageTestCase(TestCase):
     def test_init(self):
-        update_message = UpdateMessage('test')
-        self.assertEqual(update_message.sws_name, 'test')
-        self.assertIsInstance(update_message, UpdateMessage)
+        instance = UpdateMessage('test')
+        self.assertEqual(instance.sws_name, 'test')
+        self.assertIsInstance(instance, UpdateMessage)
 
-    # def test_add_msg(self):
+    def test_validate(self):
+        UpdateMessage('test')
+        self.assertRaises(TypeError, UpdateMessage, 1)
+        self.assertRaises(TypeError, UpdateMessage, None)
+        self.assertRaises(TypeError, UpdateMessage, [])
+        self.assertRaises(TypeError, UpdateMessage, {})
 
-    # def test_validate(self):
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test'
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86'
-    #     )
-    #
-    # def test_validate_svsp(self):
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         1,
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         [1000000000, 2000000000]
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         None,
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         [1000000000, 2000000000]
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         [],
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         [1000000000, 2000000000]
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         {},
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         [1000000000, 2000000000]
-    #     )
-    #
-    # def test_validate_session_name(self):
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         1,
-    #         [1000000000, 2000000000]
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         None,
-    #         [1000000000, 2000000000]
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         [],
-    #         [1000000000, 2000000000]
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         {},
-    #         [1000000000, 2000000000]
-    #     )
-    #
-    # def test_validate_amount(self):
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         {1000000000, 2000000000}
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         1000000000
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         "[1000000000, 2000000000]"
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         None
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         [None, 2000000000]
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         ["None", 2000000000]
-    #     )
-    #     self.assertRaises(
-    #         TypeError,
-    #         SessionUpdateMessage,
-    #         'test',
-    #         'c17b1828e97bf66abd5329e73755173b43b98e18ebd4b84b19a016781d8cfa86',
-    #         [["None"], 2000000000]
-    #     )
-    #
-    # def test_from_data(self):
-    #     data = DATA
-    #     msg = SessionUpdateMessage.from_data('test', data)
-    #     self.assertEqual(msg.svsp, 'test')
-    #     self.assertEqual(msg.session_name, 'c17b1828e97bf66abd5329e73755173b4'
-    #                                        '3b98e18ebd4b84b19a016781d8cfa86')
-    #     self.assertEqual(msg.amounts, [1000000000, 2000000000])
+    def test_add_data(self):
+        instance = UpdateMessage('test')
+        self.assertEqual(len(instance._data), 0)
+
+        instance.add_data(SessionData('session test', [1000000000, 200000000]))
+        self.assertEqual(len(instance._data), 1)
+
+    def test_add_data_error(self):
+        instance = UpdateMessage('test')
+        self.assertEqual(len(instance._data), 0)
+
+        self.assertRaises(TypeError, instance.add_data, '')
+        self.assertRaises(TypeError, instance.add_data, 1)
+        self.assertRaises(TypeError, instance.add_data, [])
+        self.assertRaises(TypeError, instance.add_data, {})
+        self.assertRaises(TypeError, instance.add_data, None)
+        self.assertEqual(len(instance._data), 0)
+
+    def test_from_msg(self):
+        msg = DATA
+        instance = UpdateMessage.from_msg('test', msg)
+        self.assertEqual(instance.sws_name, 'test')
+        self.assertEqual(len(instance._data), 1)
+        self.assertIsInstance(instance._data[0], SessionData)
+
+        session_data = instance._data[0]
+        self.assertEqual(session_data.session_name,
+                         'c17b1828e97bf66abd5329e737551'
+                         '73b43b98e18ebd4b84b19a016781d8cfa86')
+        self.assertEqual(len(session_data.amounts), 2)
+        self.assertIsInstance(session_data.amounts[0], Amount)
+        self.assertIsInstance(session_data.amounts[1], Amount)
+        self.assertEqual(session_data.amounts[0].value, 10.0)
+        self.assertEqual(session_data.amounts[1].value, 20.0)
