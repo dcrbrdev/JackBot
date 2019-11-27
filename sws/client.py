@@ -29,6 +29,7 @@ class SessionWebSocket(Thread):
         self.name = name
         self.url = url
         self.ws = None
+        self.ignore_next_update = False
 
     def set_ws(self):
         self.ws = WebSocketApp(self.url, on_message=self.on_message, on_error=self.on_error)
@@ -48,12 +49,17 @@ class SessionWebSocket(Thread):
     @staticmethod
     def on_message(ws: WebSocketApp, msg):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
-        msg = SessionUpdateMessage.from_data(sws.name, msg)
-        logger.info(f'SessionUpdateMessage received from {msg.sws_name}')
-        JackBot.instance().send_message(f'{msg}', parse_mode='HTML')
+        if not sws.ignore_next_update:
+            msg = SessionUpdateMessage.from_data(sws.name, msg)
+            logger.info(f'SessionUpdateMessage received from {msg.sws_name}')
+            JackBot.instance().send_message(f'{msg}', parse_mode='HTML')
+        else:
+            sws.ignore_next_update = False
 
     @staticmethod
     def on_error(ws, error: Exception):
+        sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
+        sws.ignore_next_update = True
         logger.exception(error)
 
     @classmethod
