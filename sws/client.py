@@ -1,3 +1,4 @@
+import ssl
 import logging
 from threading import Thread
 
@@ -33,7 +34,7 @@ class SessionWebSocket(Thread):
         return SessionUpdateMessage.from_data(self.name, message)
 
     def run(self):
-        self.ws.run_forever()
+        self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
 
     @classmethod
     def get_sws(cls, url):
@@ -51,8 +52,6 @@ class SessionWebSocket(Thread):
 
     @staticmethod
     def on_error(ws, error: Exception):
-        sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
-        logger.error(f'A error ocurred on {sws}:\n')
         logger.exception(error)
 
     @classmethod
