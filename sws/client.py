@@ -28,10 +28,15 @@ class SessionWebSocket(Thread):
 
         self.name = name
         self.url = url
+        self.ws = None
+
+    def set_ws(self):
         self.ws = WebSocketApp(self.url, on_message=self.on_message, on_error=self.on_error)
 
     def run(self):
-        self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
+        while True:
+            self.set_ws()
+            self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
 
     @classmethod
     def get_sws(cls, url):
