@@ -6,7 +6,3 @@ class DuplicatedSessionError(Exception):
 
 class SessionWebSocketNotFoundError(Exception):
     pass
-
-
-class InvalidSessionMessageError(Exception):
-    pass

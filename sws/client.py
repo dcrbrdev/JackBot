@@ -53,7 +53,7 @@ class SessionWebSocket(Thread):
     def on_message(ws: WebSocketApp, msg):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
         if not sws.ignore_next_update:
-            msg = UpdateMessage.from_data(sws.name, msg)
+            msg = UpdateMessage.from_msg(sws.name, msg)
             logger.info(f'SessionUpdateMessage received from {msg.sws_name}')
             JackBot.instance().send_message(f'{msg}', parse_mode='HTML')
         else:

@@ -1,7 +1,5 @@
 from json import loads
 
-from sws.exceptions import InvalidSessionMessageError
-
 
 class Amount:
     ATOM_DECIMALS = 100000000
@@ -68,8 +66,8 @@ class UpdateMessage:
 
     def add_data(self, data: SessionData):
         if not isinstance(data, SessionData):
-            raise InvalidSessionMessageError(f"{data} {type(data)} "
-                                             f"is not a {SessionData} instance")
+            raise TypeError(f"{data} {type(data)} "
+                            f"is not a {SessionData} instance")
         self._data.append(data)
 
     def validate(self):
@@ -77,12 +75,11 @@ class UpdateMessage:
             raise TypeError(f"SWS name {self.sws_name} is not a valid string")
 
     @classmethod
-    def from_data(cls, sws_name, data):
-        json_data = loads(data)
+    def from_msg(cls, sws_name, msg):
+        json_data = loads(msg)
         instance = cls(sws_name)
         for _data in json_data:
             instance.add_data(
-                SessionData(session_name=_data.get("name"),
-                            amounts=_data.get("amounts"))
+                SessionData(_data.get("name"), _data.get("amounts"))
             )
         return instance
