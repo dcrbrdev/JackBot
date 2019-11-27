@@ -1,9 +1,6 @@
 from decouple import config
 from mongoengine import connect
 
-from db.house import Status  # noqa F401
-from db.throttle import CommandCall  # noqa F401
-
 
 connect(
     db=config('DB_NAME'),

@@ -75,7 +75,7 @@ class BotTelegramCore(ABC):
 
     def add_handler(self, handler: Handler):
         if not isinstance(handler, Handler):
-            raise ValueError("Handler deve ser do tipo Handler!")
+            raise ValueError("Handler function must be of type Handler!")
         self._updater.dispatcher.add_handler(handler)
 
     def add_error_handler(self, handler):
@@ -92,12 +92,12 @@ class BotTelegramCore(ABC):
 
         self._updater.bot.set_webhook(f"{self.server_url}/{self.token}")
 
-        logger.info('Bot está rodando como um webserver!')
+        logger.info('JackBot is running as a webserver!')
         self._updater.idle()
 
     def run_cmd(self):
         """Start the bot as a python script loop"""
         self._updater.start_polling()
 
-        logger.info('Bot está rodando como um script python!')
+        logger.info('JackBot is running as python script!')
         self._updater.idle()

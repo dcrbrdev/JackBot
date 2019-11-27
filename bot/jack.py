@@ -7,7 +7,7 @@ from bot.commands import handlers
 
 
 class JackBot(BotTelegramCore):
-    """Bot Controller"""
+    """JackBot Controller"""
 
     _chat_id = config('JACK_CHAT_ID', default='123')
 
@@ -40,11 +40,12 @@ if __name__ == "__main__":
         elif mode == 'web':
             instance.run_web()
         else:
-            raise EnvironmentError('O modo passado não foi reconhecido')
+            raise EnvironmentError('Mode was not recognized! '
+                                   'Please set it as "cmd" or "web"')
 
     except EnvironmentError as e:
-        logging.error(f'Modo: {config("MODE", default="cmd")}')
-        logging.error(f'token: {instance.token}')
+        logging.error(f'Mode: {config("MODE")}')
+        logging.error(f'Token: {instance.token}')
         logging.error(f'Port: {instance.port}')
-        logging.error(f'heroku app name: {instance.server_url}')
+        logging.error(f'Server url: {instance.server_url}')
         raise e

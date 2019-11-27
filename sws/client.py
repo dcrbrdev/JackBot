@@ -5,7 +5,7 @@ from threading import Thread
 from websocket import WebSocketApp
 
 from bot.jack import JackBot
-from sws.message import SessionUpdateMessage
+from sws.message import UpdateMessage
 from sws.exceptions import DuplicatedSessionError, SessionWebSocketNotFoundError
 
 
@@ -32,7 +32,9 @@ class SessionWebSocket(Thread):
         self.ignore_next_update = False
 
     def set_ws(self):
-        self.ws = WebSocketApp(self.url, on_message=self.on_message, on_error=self.on_error)
+        self.ws = WebSocketApp(self.url,
+                               on_message=self.on_message,
+                               on_error=self.on_error)
 
     def run(self):
         while True:
@@ -43,14 +45,15 @@ class SessionWebSocket(Thread):
     def get_sws(cls, url):
         sws: SessionWebSocket = SessionWebSocket.sessions.get(url)
         if sws is None:
-            raise SessionWebSocketNotFoundError(f'A SWS with the url {url} was not found!')
+            raise SessionWebSocketNotFoundError(f'A SWS with the url {url} '
+                                                f'was not found!')
         return sws
 
     @staticmethod
     def on_message(ws: WebSocketApp, msg):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
         if not sws.ignore_next_update:
-            msg = SessionUpdateMessage.from_data(sws.name, msg)
+            msg = UpdateMessage.from_data(sws.name, msg)
             logger.info(f'SessionUpdateMessage received from {msg.sws_name}')
             JackBot.instance().send_message(f'{msg}', parse_mode='HTML')
         else:
