@@ -27,8 +27,7 @@ class SessionWebSocket(Thread):
 
     def recv(self):
         msg = SessionUpdateMessage.from_data(self.name, self.ws.recv())
-        print(msg)
-        JackBot.instance().send_message(msg.__str__())
+        JackBot.instance().send_message(f'{msg}', parse_mode='HTML')
 
     def run(self):
         while True:
