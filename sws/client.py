@@ -1,37 +1,49 @@
 from threading import Thread
 
-from websocket import create_connection
+from websocket import WebSocketApp
 
 from bot.jack import JackBot
 from sws.message import SessionUpdateMessage
-from sws.exceptions import DuplicatedSessionError
+from sws.exceptions import DuplicatedSessionError, SessionWebSocketNotFoundError
 
 
 class SessionWebSocket(Thread):
     sessions = {}
-    TEN_YEARS_TIMEOUT = 60 * 60 * 24 * 365 * 10
 
     def __init__(self, name, url):
         super(SessionWebSocket, self).__init__()
         if SessionWebSocket.sessions.get(url):
             raise DuplicatedSessionError("A session with "
-                                         "this urls is already created")
+                                         "this urls is already created!")
         SessionWebSocket.sessions[url] = self
 
         self.name = name
         self.url = url
-        self.ws = create_connection(self.url, timeout=self.TEN_YEARS_TIMEOUT)
+        self.ws = WebSocketApp(self.url, on_message=self.on_message, on_error=self.on_error)
 
     def parse_message(self, message):
         return SessionUpdateMessage.from_data(self.name, message)
 
-    def recv(self):
-        msg = SessionUpdateMessage.from_data(self.name, self.ws.recv())
+    def run(self):
+        self.ws.run_forever()
+
+    @classmethod
+    def get_sws(cls, url):
+        sws: SessionWebSocket = SessionWebSocket.sessions.get(url)
+        if sws is None:
+            raise SessionWebSocketNotFoundError(f'A SWS with the url {url} was not found!')
+        return sws
+
+    @staticmethod
+    def on_message(ws: WebSocketApp, msg):
+        sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
+        msg = SessionUpdateMessage.from_data(sws.name, msg)
         JackBot.instance().send_message(f'{msg}', parse_mode='HTML')
 
-    def run(self):
-        while True:
-            self.recv()
+    @staticmethod
+    def on_error(ws, error):
+        sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
+        print(f'A error ocurred on {sws}:\n{error}')
 
     @classmethod
     def start_all(cls):
