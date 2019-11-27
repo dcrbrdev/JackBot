@@ -24,8 +24,8 @@ class BotTelegramCore(ABC):
     def __init__(self):
         logger.info('Inicializando o bot...')
         self.token = config('BOT_TOKEN')
-        self.port = config('PORT', default=8443, cast=int)
-        self.server_url = config('SERVER_URL')
+        self.port = config('PORT', default=-1, cast=int)
+        self.server_url = config('SERVER_URL', default='?MY_CUSTOM_URL?')
 
         self._updater = Updater(self.token)
         self._running = False
@@ -101,13 +101,3 @@ class BotTelegramCore(ABC):
 
         logger.info('Bot está rodando como um script python!')
         self._updater.idle()
-
-    def run(self):
-        """Start the bot as a python script loop"""
-        if not self._running:
-            self._updater.start_polling()
-
-            logger.info('Bot está rodando como um script python!')
-            self._running = True
-        else:
-            logger.info('Bot já está rodando!')

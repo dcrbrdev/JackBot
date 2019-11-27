@@ -1,3 +1,5 @@
+import logging
+
 from decouple import config
 
 from bot.core import BotTelegramCore
@@ -29,4 +31,20 @@ class JackBot(BotTelegramCore):
 
 
 if __name__ == "__main__":
-    JackBot.instance().run()
+    instance = JackBot.instance()
+
+    try:
+        mode = config('MODE')
+        if mode == 'cmd':
+            instance.run_cmd()
+        elif mode == 'web':
+            instance.run_web()
+        else:
+            raise EnvironmentError('O modo passado não foi reconhecido')
+
+    except EnvironmentError as e:
+        logging.error(f'Modo: {config("MODE", default="cmd")}')
+        logging.error(f'token: {instance.token}')
+        logging.error(f'Port: {instance.port}')
+        logging.error(f'heroku app name: {instance.server_url}')
+        raise e
