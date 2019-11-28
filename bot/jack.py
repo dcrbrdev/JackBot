@@ -6,6 +6,13 @@ from bot.core import BotTelegramCore
 from bot.commands import handlers
 
 
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
+
+
 class JackBot(BotTelegramCore):
     """JackBot Controller"""
 
@@ -44,8 +51,8 @@ if __name__ == "__main__":
                                    'Please set it as "cmd" or "web"')
 
     except EnvironmentError as e:
-        logging.error(f'Mode: {config("MODE")}')
-        logging.error(f'Token: {instance.token}')
-        logging.error(f'Port: {instance.port}')
-        logging.error(f'Server url: {instance.server_url}')
+        logger.error(f'Mode: {config("MODE")}')
+        logger.error(f'Token: {instance.token}')
+        logger.error(f'Port: {instance.port}')
+        logger.error(f'Server url: {instance.server_url}')
         raise e
