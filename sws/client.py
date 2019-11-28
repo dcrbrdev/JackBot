@@ -77,10 +77,10 @@ class SessionWebSocket(Thread):
 
 
 if __name__ == "__main__":
-    SessionWebSocket("Decred Brasil",
+    SessionWebSocket("🇧🇷 Decred Brasil",
                      "wss://split-ticket-svc.stake."
                      "decredbrasil.com:8477/watchWaitingList")
-    SessionWebSocket("Decred Voting",
+    SessionWebSocket("🇺🇸 Decred Voting",
                      "wss://matcher.decredvoting.com:8477/watchWaitingList")
     SessionWebSocket.start_all()
     SessionWebSocket.join_all()
