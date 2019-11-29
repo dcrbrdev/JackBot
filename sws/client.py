@@ -33,6 +33,9 @@ class SessionWebSocket(Thread):
         self.ws = None
         self.ignore_next_update = False
 
+    def __str__(self):
+        return f"{self.subject}"
+
     @property
     def name(self):
         return self.subject.name

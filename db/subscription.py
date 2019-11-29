@@ -6,6 +6,9 @@ class Subject(Document):
     name = StringField(required=True, max_length=55, unique_with='emoji')
     url = StringField(required=True, max_length=120, unique=True)
 
+    def __str__(self):
+        return f"{self.header} {self.url}"
+
     @property
     def header(self):
         return f"{self.emoji} {self.name}"

@@ -29,6 +29,7 @@ class SessionWebSocketTestCase(TestCase):
         self.assertEqual(sws.url, subject.url)
         self.assertEqual(sws.name, subject.name)
         self.assertEqual(sws.header, subject.header)
+        self.assertEqual(sws.__str__(), subject.__str__())
 
     def test_set_ws(self):
         subject = Subject(

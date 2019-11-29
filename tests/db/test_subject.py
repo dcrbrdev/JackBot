@@ -24,6 +24,13 @@ class SubjectTestCase(TestCase):
         sub: Subject = Subject.objects.first()
         self.assertEqual(sub.header, "🇧🇷 Decred Brasil")
 
+    def test_str(self):
+        Subject(emoji="🇧🇷", name="Decred Brasil",
+                url="wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList").save()
+        sub: Subject = Subject.objects.first()
+        self.assertEqual(sub.__str__(),
+                         "🇧🇷 Decred Brasil wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList")
+
     def test_unique_url(self):
         Subject(emoji="🇧🇷", name="Decred Brasil",
                 url="wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList").save()
