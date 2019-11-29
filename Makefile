@@ -54,9 +54,14 @@ docker.flake8:
 	docker-compose run bot flake8
 
 docker.bot.stop:
-	docker stop bot bot-worker
+	docker stop bot
 
 docker.bot.restart: docker.bot.stop docker.up
+
+docker.worker.stop:
+	docker stop bot-worker
+
+docker.worker.restart: docker.worker.stop docker.up
 
 docker.volumes.remove: docker.down
 	docker volume rm $(current_dir)_mongo_volume

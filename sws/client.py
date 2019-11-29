@@ -72,7 +72,7 @@ class SessionWebSocket(Thread):
         if not sws.ignore_next_update:
             msg = UpdateMessage.from_msg(sws.header, msg)
             logger.info(f'SessionUpdateMessage received from {sws.name}')
-            JackBot.instance().send_message(f'{msg}', parse_mode='HTML')
+            JackBot.instance().send_message(f'{msg}')
             sws.subject.notify(f'{msg}')
         else:
             sws.ignore_next_update = False
