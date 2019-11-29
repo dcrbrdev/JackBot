@@ -11,7 +11,7 @@ DATA = '[{"name":"c17b1828e97bf66abd5329e7' \
 class UpdateMessageTestCase(TestCase):
     def test_init(self):
         instance = UpdateMessage('test')
-        self.assertEqual(instance.sws_name, 'test')
+        self.assertEqual(instance.header, 'test')
         self.assertIsInstance(instance, UpdateMessage)
 
     def test_validate(self):
@@ -42,7 +42,7 @@ class UpdateMessageTestCase(TestCase):
     def test_from_msg(self):
         msg = DATA
         instance = UpdateMessage.from_msg('test', msg)
-        self.assertEqual(instance.sws_name, 'test')
+        self.assertEqual(instance.header, 'test')
         self.assertEqual(len(instance._data), 1)
         self.assertIsInstance(instance._data[0], SessionData)
 
