@@ -53,12 +53,12 @@ class SessionData:
 
 class UpdateMessage:
     def __init__(self, sws_name):
-        self.sws_name = sws_name
+        self.header = sws_name
         self._data = []
         self.validate()
 
     def __str__(self):
-        string = f"<b>{self.sws_name}</b>\n\n"
+        string = f"<b>{self.header}</b>\n\n"
         for index, msg in enumerate(self._data):
             string += f"<code>{msg}</code>"
             string += "\n\n" if index != len(self._data) - 1 else ""
@@ -71,8 +71,8 @@ class UpdateMessage:
         self._data.append(data)
 
     def validate(self):
-        if not isinstance(self.sws_name, str):
-            raise TypeError(f"SWS name {self.sws_name} is not a valid string")
+        if not isinstance(self.header, str):
+            raise TypeError(f"SWS name {self.header} is not a valid string")
 
     @classmethod
     def from_msg(cls, sws_name, msg):
