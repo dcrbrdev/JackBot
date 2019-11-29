@@ -17,7 +17,8 @@ class SessionWebSocketTestCase(TestCase):
     def test_create(self):
         subject = Subject(
             emoji="🇧🇷", name="Decred Brasil",
-            url="wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList").save()
+            url="wss://split-ticket-svc.stake.decredbrasil"
+                ".com:8477/watchWaitingList").save()
         sws = SessionWebSocket(subject)
 
         self.assertEqual(len(SessionWebSocket.sessions), 1)
@@ -34,7 +35,8 @@ class SessionWebSocketTestCase(TestCase):
     def test_set_ws(self):
         subject = Subject(
             emoji="🇧🇷", name="Decred Brasil",
-            url="wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList").save()
+            url="wss://split-ticket-svc.stake.decredbrasil"
+                ".com:8477/watchWaitingList").save()
         sws = SessionWebSocket(subject)
 
         self.assertIsNone(sws.ws)
@@ -46,23 +48,28 @@ class SessionWebSocketTestCase(TestCase):
     def test_get_sws(self):
         subject = Subject(
             emoji="🇧🇷", name="Decred Brasil",
-            url="wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList").save()
+            url="wss://split-ticket-svc.stake.decredbrasil"
+                ".com:8477/watchWaitingList").save()
         SessionWebSocket(subject)
 
         self.assertEqual(len(SessionWebSocket.sessions), 1)
 
-        sws = SessionWebSocket.get_sws("wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList")
+        sws = SessionWebSocket.get_sws("wss://split-ticket-svc.stake."
+                                       "decredbrasil.com:8477/watchWaitingList")
         self.assertIsInstance(sws, SessionWebSocket)
 
-        self.assertRaises(SessionWebSocketNotFoundError, SessionWebSocket.get_sws, "url_teste")
+        self.assertRaises(SessionWebSocketNotFoundError,
+                          SessionWebSocket.get_sws, "url_teste")
 
     def test_create_all(self):
         Subject(
             emoji="🇧🇷", name="Decred Brasil",
-            url="wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList").save()
+            url="wss://split-ticket-svc.stake.decredbrasil"
+                ".com:8477/watchWaitingList").save()
         Subject(
             emoji="🇺🇸", name="Decred Voting",
-            url="wss://matcher.decredvoting.com:8477/watchWaitingList").save()
+            url="wss://matcher.decredvoting.com:8477/"
+                "watchWaitingList").save()
 
         self.assertEqual(len(SessionWebSocket.sessions), 0)
 
@@ -70,18 +77,22 @@ class SessionWebSocketTestCase(TestCase):
 
         self.assertEqual(len(SessionWebSocket.sessions), 2)
 
-        sws = SessionWebSocket.get_sws("wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList")
+        sws = SessionWebSocket.get_sws("wss://split-ticket-svc.stake."
+                                       "decredbrasil.com:8477/watchWaitingList")
         self.assertIsNone(sws.ws)
         self.assertFalse(sws.ignore_next_update)
 
-        self.assertEqual(sws.url, "wss://split-ticket-svc.stake.decredbrasil.com:8477/watchWaitingList")
+        self.assertEqual(sws.url, "wss://split-ticket-svc.stake.decredbrasil"
+                                  ".com:8477/watchWaitingList")
         self.assertEqual(sws.name, "Decred Brasil")
         self.assertEqual(sws.header, "🇧🇷 Decred Brasil")
 
-        sws = SessionWebSocket.get_sws("wss://matcher.decredvoting.com:8477/watchWaitingList")
+        sws = SessionWebSocket.get_sws("wss://matcher.decredvoting"
+                                       ".com:8477/watchWaitingList")
         self.assertIsNone(sws.ws)
         self.assertFalse(sws.ignore_next_update)
 
-        self.assertEqual(sws.url, "wss://matcher.decredvoting.com:8477/watchWaitingList")
+        self.assertEqual(sws.url, "wss://matcher.decredvoting.com:"
+                                  "8477/watchWaitingList")
         self.assertEqual(sws.name, "Decred Voting")
         self.assertEqual(sws.header, "🇺🇸 Decred Voting")
