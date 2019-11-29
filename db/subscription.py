@@ -12,7 +12,7 @@ class Observer(Document):
         return f"{self.username} {self.chat_id}"
 
     def notify(self, message):
-        BotTelegramCore.instance().send_message(message, chat_id=self.chat_id, parse_mode='HTML')
+        BotTelegramCore.instance().send_message(message, chat_id=self.chat_id)
 
 
 class Subject(Document):
@@ -29,7 +29,7 @@ class Subject(Document):
     def header(self):
         return f"{self.emoji} {self.name}"
 
-    def register(self, observer: Observer):
+    def subscribe(self, observer: Observer):
         if not isinstance(observer, Observer):
             raise TypeError(f"{observer} is not instance of {Observer}")
         if observer in self.observers:
@@ -37,7 +37,7 @@ class Subject(Document):
         self.observers.append(observer)
         self.save()
 
-    def unregister(self, observer: Observer):
+    def unsubscribe(self, observer: Observer):
         if not isinstance(observer, Observer):
             raise TypeError(f"{observer} is not instance of {Observer}")
         if observer not in self.observers:
