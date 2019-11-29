@@ -16,8 +16,8 @@ class Observer(Document):
 
 
 class Subject(Document):
-    emoji = StringField(required=True, max_length=5)
-    name = StringField(required=True, max_length=55, unique_with='emoji')
+    emoji = StringField(required=True, max_length=2)
+    name = StringField(required=True, max_length=55, unique=True)
     url = StringField(required=True, max_length=120, unique=True)
 
     observers = ListField(ReferenceField(Observer, reverse_delete_rule=CASCADE), default=[])
