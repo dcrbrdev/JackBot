@@ -1,7 +1,16 @@
+import logging
+
 from mongoengine import Document, StringField, ListField, ReferenceField, CASCADE
 
 from bot.core import BotTelegramCore
 from db.exceptions import ObserverNotRegisteredError, ObserverAlreadyRegisteredError
+
+
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 
 class Observer(Document):
@@ -46,5 +55,6 @@ class Subject(Document):
         self.save()
 
     def notify(self, message):
+        logger.info(f'Notifying observers {self.observers} for {self}')
         for observer in self.observers:
             observer.notify(message)
