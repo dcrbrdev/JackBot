@@ -1,0 +1,30 @@
+version: '3'
+
+volumes:
+    mongo_volume:
+
+services:
+    mongo:
+        image: mongo
+        container_name: mongo
+        env_file: .env
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongo_volume:/data/db
+
+    bot:
+        image: dcrguys/jack_bot
+        container_name: bot
+        command: python -m bot.jack
+        depends_on:
+            - mongo
+        env_file: .env
+
+    bot-worker:
+        image: dcrguys/jack_bot
+        container_name: bot-worker
+        command: python -m sws.client
+        depends_on:
+            - mongo
+        env_file: .env
