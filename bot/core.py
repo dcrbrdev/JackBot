@@ -22,12 +22,12 @@ class BotTelegramCore(ABC):
         return cls._instance
 
     def __init__(self):
-        logger.info('Inicializando o bot...')
+        logger.info('Initializing bot...')
         self.token = config('BOT_TOKEN')
         self.port = config('PORT', default=-1, cast=int)
         self.server_url = config('SERVER_URL', default='?MY_CUSTOM_URL?')
 
-        self._updater = Updater(self.token)
+        self._updater = Updater(self.token, use_context=True)
         self._running = False
 
     @classmethod
@@ -70,7 +70,7 @@ class BotTelegramCore(ABC):
         instance._updater.bot.send_message(
             chat_id=chat_id,
             text=text,
-            parse_mode=parse_mode or ParseMode.MARKDOWN
+            parse_mode=parse_mode or ParseMode.HTML
         )
 
     def add_handler(self, handler: Handler):
