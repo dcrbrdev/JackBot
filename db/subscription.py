@@ -1,9 +1,11 @@
 import logging
 
-from mongoengine import Document, StringField, ListField, ReferenceField, CASCADE
+from mongoengine import (Document, StringField,
+                         ListField, ReferenceField, CASCADE)
 
 from bot.core import BotTelegramCore
-from db.exceptions import ObserverNotRegisteredError, ObserverAlreadyRegisteredError
+from db.exceptions import (ObserverNotRegisteredError,
+                           ObserverAlreadyRegisteredError)
 
 
 logging.basicConfig(
@@ -29,7 +31,9 @@ class Subject(Document):
     name = StringField(required=True, max_length=55, unique=True)
     url = StringField(required=True, max_length=120, unique=True)
 
-    observers = ListField(ReferenceField(Observer, reverse_delete_rule=CASCADE), default=[])
+    observers = ListField(
+        ReferenceField(Observer, reverse_delete_rule=CASCADE), default=[]
+    )
 
     def __str__(self):
         return f"{self.header} {self.url}"
@@ -42,7 +46,8 @@ class Subject(Document):
         if not isinstance(observer, Observer):
             raise TypeError(f"{observer} is not instance of {Observer}")
         if observer in self.observers:
-            raise ObserverAlreadyRegisteredError(f"Observer {observer} is already registered!")
+            raise ObserverAlreadyRegisteredError(f"Observer {observer} "
+                                                 f"is already registered!")
         self.observers.append(observer)
         self.save()
 
@@ -50,7 +55,8 @@ class Subject(Document):
         if not isinstance(observer, Observer):
             raise TypeError(f"{observer} is not instance of {Observer}")
         if observer not in self.observers:
-            raise ObserverNotRegisteredError(f"Observer {observer} is not registered!")
+            raise ObserverNotRegisteredError(f"Observer {observer} "
+                                             f"is not registered!")
         self.observers.remove(observer)
         self.save()
 

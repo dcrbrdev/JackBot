@@ -27,7 +27,8 @@ def subscribe(update: Update, context: CallbackContext):
         observer = Observer(chat_id=f"{chat.id}", username=f"{chat_username}").save()
 
     subscribed_subjects = Subject.objects(observers=observer)
-    avaliable_subjects = [subject for subject in Subject.objects() if subject not in subscribed_subjects]
+    avaliable_subjects = [subject for subject in Subject.objects()
+                          if subject not in subscribed_subjects]
 
     buttons_list = [
         InlineKeyboardButton(
@@ -41,7 +42,9 @@ def subscribe(update: Update, context: CallbackContext):
     ]
     menu = InlineKeyboardMarkup(build_menu(buttons_list, n_cols=1))
 
-    context.bot.send_message(chat.id, "<b>Avaliable subjects</b>", parse_mode='HTML', reply_markup=menu)
+    context.bot.send_message(chat.id,
+                             "<b>Avaliable subjects</b>",
+                             parse_mode='HTML', reply_markup=menu)
 
 
 def unsubscribe(update: Update, context: CallbackContext):
@@ -64,7 +67,9 @@ def unsubscribe(update: Update, context: CallbackContext):
 
     menu = InlineKeyboardMarkup(build_menu(buttons_list, n_cols=1))
 
-    context.bot.send_message(chat.id, "<b>Subscribed subjects</b>", parse_mode='HTML', reply_markup=menu)
+    context.bot.send_message(chat.id,
+                             "<b>Subscribed subjects</b>",
+                             parse_mode='HTML', reply_markup=menu)
 
 
 def subscriptions(update: Update, context: CallbackContext):
