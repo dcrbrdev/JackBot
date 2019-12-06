@@ -5,7 +5,7 @@ volumes:
 
 services:
     mongo:
-        image: arm64v8/mongo
+        image: apcheamitru/arm32v7-mongo
         container_name: mongo
         env_file: .env
         ports:
