@@ -1,7 +1,7 @@
-FROM python:3.7
+FROM arm32v7/python:3.7
 ENV PYTHONUNBUFFERED 1
 
-COPY qemu-arm-static /usr/bin
+COPY qemu-arm-static /usr/bin/
 
 # Requirements have to be pulled and installed here, otherwise caching won't work
 COPY requirements.txt requirements.txt
