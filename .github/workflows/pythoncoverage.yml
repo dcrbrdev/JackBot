@@ -20,5 +20,5 @@ jobs:
         run: make config.env
       - name: Codacy Coverage
         env:
-          CODACY_TOKEN_PROJECT: $
+          CODACY_TOKEN_PROJECT: ${{ secrets.CODACY_TOKEN_PROJECT }}
         run: make coverage.codacy
