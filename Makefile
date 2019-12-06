@@ -65,3 +65,9 @@ docker.worker.restart: docker.worker.stop docker.up
 
 docker.volumes.remove: docker.down
 	docker volume rm $(current_dir)_mongo_volume
+
+docker.stop.all:
+	docker ps | awk '{print $$1}' | grep -v CONTAINER | xargs docker stop
+
+docker.remove.all:
+	docker ps -a | awk '{print $$1}' | grep -v CONTAINER | xargs docker rm
