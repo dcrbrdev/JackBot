@@ -5,7 +5,7 @@ volumes:
 
 services:
     mongo:
-        image: mangoraft/mongodb-arm
+        image: arm64v8/mongo
         container_name: mongo
         env_file: .env
         ports:
