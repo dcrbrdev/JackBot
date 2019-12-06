@@ -20,7 +20,8 @@ class Observer(Document):
     chat_id = StringField(required=True, max_length=50, unique=True)
 
     def __str__(self):
-        return f"{self.username if self.username else ''} {self.chat_id}".strip()
+        return f"{self.username if self.username else ''} " \
+               f"{self.chat_id}".strip()
 
     def notify(self, message):
         BotTelegramCore.instance().send_message(message, chat_id=self.chat_id)

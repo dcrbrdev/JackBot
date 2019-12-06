@@ -36,7 +36,8 @@ def handle_callback(update: Update, context: CallbackContext):
             elif data.get('type') == "unsubscribe":
                 subject.unsubscribe(observer)
                 msg = f"Observer {observer} has been unsubscribed to {subject}"
-        except (ObserverNotRegisteredError, ObserverAlreadyRegisteredError) as e:
+        except (ObserverNotRegisteredError,
+                ObserverAlreadyRegisteredError) as e:
             msg = f"{e}"
 
         context.bot.answer_callback_query(
