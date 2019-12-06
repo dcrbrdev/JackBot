@@ -1,7 +1,9 @@
-FROM arm32v7/python:3.7
-ENV PYTHONUNBUFFERED 1
+FROM arm32v7/debian:stretch-slim AS builder
 
 COPY qemu-arm-static /usr/bin
+
+FROM arm32v7/python:3.7 as release
+ENV PYTHONUNBUFFERED 1
 
 # Requirements have to be pulled and installed here, otherwise caching won't work
 COPY requirements.txt requirements.txt
