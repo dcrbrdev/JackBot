@@ -6,6 +6,8 @@ from telegram.ext import CallbackQueryHandler, CallbackContext
 
 from bot.core import BotTelegramCore
 from db.subscription import Subject, Observer
+from db.exceptions import (ObserverAlreadyRegisteredError,
+                           ObserverNotRegisteredError)
 
 
 logging.basicConfig(
@@ -27,13 +29,16 @@ def handle_callback(update: Update, context: CallbackContext):
         subject = Subject.objects.get(id=data.get('id'))
 
         msg = ""
+        try:
+            if data.get('type') == "subscribe":
+                subject.subscribe(observer)
+                msg = f"Observer {observer} has been subscribed to {subject}"
+            elif data.get('type') == "unsubscribe":
+                subject.unsubscribe(observer)
+                msg = f"Observer {observer} has been unsubscribed to {subject}"
+        except (ObserverNotRegisteredError, ObserverAlreadyRegisteredError) as e:
+            msg = f"{e}"
 
-        if data.get('type') == "subscribe":
-            subject.subscribe(observer)
-            msg = f"Observer {observer} has been subscribed to {subject}"
-        elif data.get('type') == "unsubscribe":
-            subject.unsubscribe(observer)
-            msg = f"Observer {observer} has been unsubscribed to {subject}"
         context.bot.answer_callback_query(
             callback_query_id=query.id,
             text=msg,
