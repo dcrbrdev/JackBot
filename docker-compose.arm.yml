@@ -1,0 +1,34 @@
+version: '3'
+
+volumes:
+    mongo_volume:
+
+services:
+    mongo:
+        image: mangoraft/mongodb-arm
+        container_name: mongo
+        env_file: .env
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongo_volume:/data/db
+
+    bot:
+        build:
+            context: .
+            dockerfile: Dockerfile.arm
+        container_name: bot
+        command: python -m bot.jack
+        depends_on:
+            - mongo
+        env_file: .env
+
+    bot-worker:
+        build:
+            context: .
+            dockerfile: Dockerfile.arm
+        container_name: bot-worker
+        command: python -m sws.client
+        depends_on:
+            - mongo
+        env_file: .env
