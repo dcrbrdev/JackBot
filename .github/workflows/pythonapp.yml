@@ -3,7 +3,7 @@ name: Python application
 on: [push]
 
 jobs:
-  test:
+  flake8:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
       run: |
         flake8 .
 
-  flake8:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,7 +33,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
+      - name: Config .env file
+        run: |
+          cp .env.example .env
       - name: Test with pytest
         run: |
-          pip install pytest
           pytest
