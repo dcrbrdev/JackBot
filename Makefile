@@ -33,86 +33,86 @@ pip.install:
 ###### DOCKER DEV COMMANDS ######
 #################################
 docker.build:
-	docker-compose build
+	sudo docker-compose build
 
 docker.logs:
-	docker-compose logs -f
+	sudo docker-compose logs -f
 
 docker.up:
-	docker-compose up -d
+	sudo docker-compose up -d
 
 docker.down:
-	docker-compose down
+	sudo docker-compose down
 
 docker.bot.bash:
-	docker-compose exec bot bash
+	sudo docker-compose exec bot bash
 
 docker.mongo.bash:
-	docker-compose exec mongo bash
+	sudo docker-compose exec mongo bash
 
 docker.test:
-	docker-compose run bot pytest
+	sudo docker-compose run bot pytest
 
 docker.flake8:
-	docker-compose run bot flake8
+	sudo docker-compose run bot flake8
 
 docker.bot.stop:
-	docker stop bot
+	sudo docker stop bot
 
 docker.bot.restart: docker.bot.stop docker.up
 
 docker.worker.stop:
-	docker stop bot-worker
+	sudo docker stop bot-worker
 
 docker.worker.restart: docker.worker.stop docker.up
 
 docker.volumes.remove: docker.down
-	docker volume rm $(current_dir)_mongo_volume
+	sudo docker volume rm $(current_dir)_mongo_volume
 
 docker.stop.all:
-	docker ps | awk '{print $$1}' | grep -v CONTAINER | xargs docker stop
+	sudo docker ps | awk '{print $$1}' | grep -v CONTAINER | xargs sudo docker stop
 
 docker.remove.all:
-	docker ps -a | awk '{print $$1}' | grep -v CONTAINER | xargs docker rm
+	sudo docker ps -a | awk '{print $$1}' | grep -v CONTAINER | xargs sudo docker rm
 
 #################################
 ##### DOCKER PROD COMMANDS ######
 #################################
 docker.prod.build:
-	docker-compose -f docker-compose.prod.yml build
+	sudo docker-compose -f docker-compose.prod.yml build
 
 docker.prod.logs:
-	docker-compose -f docker-compose.prod.yml logs -f
+	sudo docker-compose -f docker-compose.prod.yml logs -f
 
 docker.prod.up:
-	docker-compose -f docker-compose.prod.yml up -d
+	sudo docker-compose -f docker-compose.prod.yml up -d
 
 docker.prod.down:
-	docker-compose -f docker-compose.prod.yml down
+	sudo docker-compose -f docker-compose.prod.yml down
 
 docker.prod.bot.bash:
-	docker-compose -f docker-compose.prod.yml exec bot bash
+	sudo docker-compose -f docker-compose.prod.yml exec bot bash
 
 docker.prod.mongo.bash:
-	docker-compose -f docker-compose.prod.yml exec mongo bash
+	sudo docker-compose -f docker-compose.prod.yml exec mongo bash
 
 #################################
 ###### DOCKER ARM COMMANDS ######
 #################################
 docker.arm.build:
-	docker-compose -f docker-compose.arm.yml build
+	sudo docker-compose -f docker-compose.arm.yml build
 
 docker.arm.logs:
-	docker-compose -f docker-compose.arm.yml logs -f
+	sudo docker-compose -f docker-compose.arm.yml logs -f
 
 docker.arm.up:
-	docker-compose -f docker-compose.arm.yml up -d
+	sudo docker-compose -f docker-compose.arm.yml up -d
 
 docker.arm.down:
-	docker-compose -f docker-compose.arm.yml down
+	sudo docker-compose -f docker-compose.arm.yml down
 
 docker.arm.bot.bash:
-	docker-compose -f docker-compose.arm.yml exec bot bash
+	sudo docker-compose -f docker-compose.arm.yml exec bot bash
 
 docker.arm.mongo.bash:
-	docker-compose -f docker-compose.arm.yml exec mongo bash
+	sudo docker-compose -f docker-compose.arm.yml exec mongo bash
