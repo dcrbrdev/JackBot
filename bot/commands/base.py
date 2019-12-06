@@ -17,9 +17,11 @@ def config_handlers(instance: BotTelegramCore):
     logger.info('Setting base commands...')
 
     instance.add_handler(
-        CommandHandler("start",
-                       lambda update, context: update.message.reply_text(START)))
+        CommandHandler(
+            "start",
+            lambda update, context: update.message.reply_text(START)))
 
     instance.add_handler(
-        CommandHandler("help",
-                       lambda update, context: update.message.reply_text(HELP)))
+        CommandHandler(
+            "help",
+            lambda update, context: update.message.reply_text(HELP)))
