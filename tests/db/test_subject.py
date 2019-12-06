@@ -37,12 +37,12 @@ class SubjectTestCase(TestCase):
                          ".decredbrasil.com:8477/watchWaitingList")
 
     def test_unique_url(self):
-        Subject(emoji="🇧🇷", name="Decred Brasil",
+        Subject(emoji="🇧", name="Decred Brasil",
                 url="wss://split-ticket-svc.stake.decredbrasil"
                     ".com:8477/watchWaitingList").save()
         self.assertEqual(Subject.objects.count(), 1)
 
-        sub_2 = Subject(emoji="🇧🇷 A", name="ASDDecred Brasil",
+        sub_2 = Subject(emoji="🇧🇷", name="ASDDecred Brasil",
                         url="wss://split-ticket-svc.stake.decredbrasil"
                             ".com:8477/watchWaitingList")
         self.assertRaises(NotUniqueError, sub_2.save)

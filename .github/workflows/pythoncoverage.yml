@@ -18,7 +18,7 @@ jobs:
         run: make pip.install
       - name: Config .env file
         run: make config.env
-      - name: Test with pytest
+      - name: Codacy Coverage
         env:
           CODACY_TOKEN_PROJECT: $
         run: make coverage.codacy
