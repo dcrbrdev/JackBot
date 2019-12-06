@@ -14,7 +14,9 @@ services:
             - mongo_volume:/data/db
 
     bot:
-        image: dcrguys/jack_bot:arm
+        build:
+            context: .
+            dockerfile: Dockerfile.arm
         container_name: bot
         command: python -m bot.jack
         depends_on:
@@ -22,7 +24,9 @@ services:
         env_file: .env
 
     bot-worker:
-        image: dcrguys/jack_bot:arm
+        build:
+            context: .
+            dockerfile: Dockerfile.arm
         container_name: bot-worker
         command: python -m sws.client
         depends_on:
