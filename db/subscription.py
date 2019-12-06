@@ -16,11 +16,12 @@ logger = logging.getLogger(__name__)
 
 
 class Observer(Document):
-    username = StringField(required=True, max_length=50, unique=True)
+    username = StringField(max_length=50)
     chat_id = StringField(required=True, max_length=50, unique=True)
 
     def __str__(self):
-        return f"{self.username} {self.chat_id}"
+        return f"{self.username if self.username else ''} " \
+               f"{self.chat_id}".strip()
 
     def notify(self, message):
         BotTelegramCore.instance().send_message(message, chat_id=self.chat_id)
