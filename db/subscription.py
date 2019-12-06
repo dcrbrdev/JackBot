@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class Observer(Document):
-    username = StringField(required=True, max_length=50, unique=True)
+    username = StringField(max_length=50)
     chat_id = StringField(required=True, max_length=50, unique=True)
 
     def __str__(self):

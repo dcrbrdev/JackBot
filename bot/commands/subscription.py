@@ -23,7 +23,8 @@ def subscribe(update: Update, context: CallbackContext):
     try:
         observer = Observer.objects.get(chat_id=f"{chat.id}")
     except DoesNotExist:
-        observer = Observer(chat_id=f"{chat.id}", username=chat.username).save()
+        chat_username = chat.username or chat.id
+        observer = Observer(chat_id=f"{chat.id}", username=f"{chat_username}").save()
 
     subscribed_subjects = Subject.objects(observers=observer)
     avaliable_subjects = [subject for subject in Subject.objects() if subject not in subscribed_subjects]
