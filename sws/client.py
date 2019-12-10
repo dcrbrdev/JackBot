@@ -81,6 +81,7 @@ class SessionWebSocket(Thread):
                 logger.info(f'{sws.name} got the lock!')
                 sws.subject.notify(msg)
                 sws.lock.release()
+                logger.info(f'{sws.name} released lock!')
             except ValidationError as e:
                 logger.info(f"Supress {e} for creating {UpdateMessage} from empty data on {sws}")
         else:
