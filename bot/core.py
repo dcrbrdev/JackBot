@@ -67,7 +67,7 @@ class BotTelegramCore(ABC):
     @classmethod
     def send_message(cls, text, chat_id, parse_mode=None):
         instance = cls.instance()
-        instance._updater.bot.send_message(
+        return instance._updater.bot.send_message(
             chat_id=chat_id,
             text=text,
             parse_mode=parse_mode or ParseMode.HTML
