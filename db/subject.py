@@ -3,10 +3,11 @@ import logging
 from mongoengine import (
     Document,
     StringField, ListField,
-    ReferenceField, CASCADE)
+    ReferenceField, NULLIFY)
 
 from db.exceptions import (ObserverNotRegisteredError,
                            ObserverAlreadyRegisteredError)
+from db.observer import Observer
 
 
 logging.basicConfig(
@@ -22,7 +23,7 @@ class Subject(Document):
     url = StringField(required=True, max_length=120, unique=True)
 
     observers = ListField(
-        ReferenceField('Observer', reverse_delete_rule=CASCADE), default=[]
+        ReferenceField(Observer, reverse_delete_rule=NULLIFY), default=[]
     )
 
     def __str__(self):
