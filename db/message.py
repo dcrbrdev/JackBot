@@ -1,8 +1,12 @@
 from json import loads
 
-from mongoengine import Document, EmbeddedDocument, IntField, StringField, EmbeddedDocumentListField, ReferenceField
+import pendulum
+from mongoengine import (
+    Document, EmbeddedDocument,
+    IntField, StringField, DateTimeField,
+    EmbeddedDocumentListField, ReferenceField)
 
-from db.subscription import Subject
+from db.subject import Subject
 
 
 class Amount(EmbeddedDocument):
@@ -26,7 +30,7 @@ class Amount(EmbeddedDocument):
 
 class Session(EmbeddedDocument):
     hash = StringField(required=True)
-    amounts = EmbeddedDocumentListField(Amount)
+    amounts = EmbeddedDocumentListField(Amount, required=True)
 
     def __str__(self):
         string = f"{self.hash[:32]}:\t["
@@ -47,8 +51,9 @@ class Session(EmbeddedDocument):
 
 
 class UpdateMessage(Document):
-    subject = ReferenceField(Subject)
-    sessions = EmbeddedDocumentListField(Session)
+    subject = ReferenceField(Subject, required=True)
+    sessions = EmbeddedDocumentListField(Session, required=True)
+    datetime = DateTimeField(default=pendulum.now, required=True)
 
     def __str__(self):
         string = f"<b>{self.subject.header}</b>\n\n"
