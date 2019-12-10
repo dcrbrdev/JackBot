@@ -7,7 +7,8 @@ from telegram.ext import CommandHandler, CallbackContext
 
 from bot.core import BotTelegramCore
 from bot.utils import build_menu
-from db.subscription import Subject, Observer
+from db.subject import Subject
+from db.observer import Observer
 
 
 logging.basicConfig(
