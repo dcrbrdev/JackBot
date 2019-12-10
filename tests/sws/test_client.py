@@ -4,7 +4,7 @@ import pytest
 from websocket import WebSocketApp
 
 from tests.fixtures import mongo  # noqa F401
-from db.subscription import Subject
+from db.subject import Subject
 from sws.client import SessionWebSocket
 from sws.exceptions import SessionWebSocketNotFoundError
 

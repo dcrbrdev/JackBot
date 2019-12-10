@@ -4,7 +4,7 @@ import pytest
 
 from tests.fixtures import mongo  # noqa F401
 from db.message import UpdateMessage, Session, Amount
-from db.subscription import Subject
+from db.subject import Subject
 
 
 DATA = '[{"name":"c17b1828e97bf66abd5329e7' \
@@ -20,7 +20,7 @@ class UpdateMessageTestCase(TestCase):
                                ".com:8477/watchWaitingList").save()
 
     def test_init(self):
-        UpdateMessage(self.subject).save()
+        UpdateMessage(self.subject, [Session('test', [Amount(10)])]).save()
         instance = UpdateMessage.objects.first()
         self.assertEqual(instance.subject, self.subject)
         self.assertIsInstance(instance, UpdateMessage)

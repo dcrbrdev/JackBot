@@ -4,7 +4,7 @@ import pytest
 from mongoengine.errors import NotUniqueError
 
 from tests.fixtures import mongo  # noqa F401
-from db.subscription import Subject
+from db.subject import Subject
 
 
 @pytest.mark.usefixtures('mongo')
