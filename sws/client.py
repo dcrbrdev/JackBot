@@ -6,7 +6,7 @@ from websocket import WebSocketApp
 
 from bot.jack import JackBot
 from db.subscription import Subject
-from sws.message import UpdateMessage
+from db.message import UpdateMessage
 from sws.exceptions import DuplicatedSessionError, SessionWebSocketNotFoundError
 
 
@@ -67,10 +67,10 @@ class SessionWebSocket(Thread):
         return sws
 
     @staticmethod
-    def on_message(ws: WebSocketApp, msg):
+    def on_message(ws: WebSocketApp, data):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
         if not sws.ignore_next_update:
-            msg = UpdateMessage.from_msg(sws.header, msg)
+            msg = UpdateMessage.from_data(sws.header, data)
             logger.info(f'SessionUpdateMessage received from {sws.name}')
             JackBot.instance().send_message(f'{msg}')
             sws.subject.reload()
