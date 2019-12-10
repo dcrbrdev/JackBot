@@ -42,15 +42,20 @@ class Observer(Document):
         self._send_update_message(update_message)
 
     def _send_update_message(self, update_message):
-        telegram_message = BotTelegramCore.send_message(f'{update_message}', chat_id=self.chat_id)
-        om = ObserverMessage(telegram_message.message_id, update_message.subject).save()
+        telegram_message = BotTelegramCore.send_message(
+            f'{update_message}', chat_id=self.chat_id)
+        om = ObserverMessage(telegram_message.message_id,
+                             update_message.subject).save()
         self.messages.append(om)
         self.save()
 
     def _remove_last_message_from_subject(self, subject):
         self.reload()
         try:
-            for om in [om for om in self.messages if isinstance(om, ObserverMessage) and om.subject == subject]:
+            observer_messages = [om for om in self.messages if
+                                 isinstance(om, ObserverMessage) and
+                                 om.subject == subject]
+            for om in observer_messages:
                 BotTelegramCore.delete_message(self.chat_id, om.message_id)
                 self.messages.remove(om)
                 self.save()

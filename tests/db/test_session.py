@@ -3,7 +3,7 @@ from unittest import TestCase
 import pytest
 
 from tests.fixtures import mongo  # noqa F401
-from db.message import Session, Amount
+from db.update_message import Session, Amount
 
 DATA = {
     "name": "c17b1828e97bf66abd5329e7",
@@ -38,4 +38,3 @@ class SessionTestCase(TestCase):
         self.assertIsInstance(instance.amounts[1], Amount)
         self.assertEqual(instance.amounts[0].value, 10.0)
         self.assertEqual(instance.amounts[1].value, 20.0)
-

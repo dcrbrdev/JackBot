@@ -7,7 +7,7 @@ from mongoengine.errors import ValidationError
 
 from bot.jack import JackBot
 from db.subject import Subject
-from db.message import UpdateMessage
+from db.update_message import UpdateMessage
 from sws.exceptions import DuplicatedSessionError, SessionWebSocketNotFoundError
 
 
@@ -83,7 +83,8 @@ class SessionWebSocket(Thread):
                 sws.lock.release()
                 logger.info(f'{sws.name} released lock!')
             except ValidationError as e:
-                logger.info(f"Supress {e} for creating {UpdateMessage} from empty data on {sws}")
+                logger.info(f"Supress {e} for creating {UpdateMessage} "
+                            f"from empty data on {sws}")
         else:
             sws.ignore_next_update = False
 

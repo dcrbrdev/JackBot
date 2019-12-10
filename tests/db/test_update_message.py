@@ -3,7 +3,7 @@ from unittest import TestCase
 import pytest
 
 from tests.fixtures import mongo  # noqa F401
-from db.message import UpdateMessage, Session, Amount
+from db.update_message import UpdateMessage, Session, Amount
 from db.subject import Subject
 
 
