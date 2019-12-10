@@ -1,8 +1,9 @@
 import ssl
 import logging
-from threading import Thread
+from threading import Thread, Lock
 
 from websocket import WebSocketApp
+from mongoengine.errors import ValidationError
 
 from bot.jack import JackBot
 from db.subject import Subject
@@ -19,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 class SessionWebSocket(Thread):
     sessions = {}
+    lock = Lock()
 
     def __init__(self, subject: Subject):
         self.subject = subject
@@ -70,11 +72,17 @@ class SessionWebSocket(Thread):
     def on_message(ws: WebSocketApp, data):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
         if not sws.ignore_next_update:
-            msg = UpdateMessage.from_data(sws.header, data)
-            logger.info(f'SessionUpdateMessage received from {sws.name}')
-            JackBot.instance().send_message(f'{msg}')
-            sws.subject.reload()
-            sws.subject.notify(msg)
+            try:
+                msg = UpdateMessage.from_data(sws.subject, data)
+                logger.info(f'SessionUpdateMessage received from {sws.name}')
+                sws.subject.reload()
+                logger.info(f'{sws.name} trying to acquire lock...')
+                sws.lock.acquire()
+                logger.info(f'{sws.name} got the lock!')
+                sws.subject.notify(msg)
+                sws.lock.release()
+            except ValidationError as e:
+                logger.info(f"Supress {e} for creating {UpdateMessage} from empty data on {sws}")
         else:
             sws.ignore_next_update = False
 
@@ -102,6 +110,7 @@ class SessionWebSocket(Thread):
 
 
 if __name__ == "__main__":
+    JackBot.instance()
     logger.info("Creating all SWS's...")
     SessionWebSocket.create_all()
     logger.info(f"SWS's created: {SessionWebSocket.sessions}")
