@@ -57,9 +57,9 @@ class UpdateMessage(Document):
 
     def __str__(self):
         string = f"<b>{self.subject.header}</b>\n\n"
-        for index, msg in enumerate(self._data):
+        for index, msg in enumerate(self.sessions):
             string += f"<code>{msg}</code>"
-            string += "\n\n" if index != len(self._data) - 1 else ""
+            string += "\n\n" if index != len(self.sessions) - 1 else ""
         return string
 
     @classmethod
