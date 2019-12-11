@@ -49,7 +49,8 @@ class Subject(Document):
 
     def notify(self, update_message):
         official_observer = Observer.get_official_observer()
-        logger.info(f'Notifying official observer {official_observer} for {self}')
+        logger.info(f'Notifying official observer {official_observer} '
+                    f'for {self}')
         official_observer.notify(update_message)
         logger.info(f'Notifying observers {self.observers} for {self}')
         for observer in self.observers:

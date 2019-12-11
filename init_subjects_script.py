@@ -2,7 +2,6 @@ from mongoengine.errors import NotUniqueError
 
 from db.subject import Subject
 from db.observer import Observer
-from db.exceptions import ObserverAlreadyRegisteredError
 
 
 try:

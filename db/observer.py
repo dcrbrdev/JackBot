@@ -76,7 +76,8 @@ class UserObserver(Observer):
     def _send_update_message(self, update_message):
         official_observer = Observer.get_official_observer()
         last_official_message = ObserverMessage\
-            .objects(subject=update_message.subject, observer=official_observer)\
+            .objects(subject=update_message.subject,
+                     observer=official_observer)\
             .order_by('-datetime').first()
         telegram_message = BotTelegramCore.forward_message(
             to_chat_id=self.chat_id,
@@ -95,7 +96,8 @@ class UserObserver(Observer):
         self.reload()
         try:
             observer_messages = filter(
-                lambda x: isinstance(x, ObserverMessage) and x.subject == subject,
+                lambda x: (isinstance(x, ObserverMessage)
+                           and x.subject == subject),
                 self.messages
             )
 
