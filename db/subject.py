@@ -20,14 +20,14 @@ logger = logging.getLogger(__name__)
 class Subject(Document):
     emoji = StringField(required=True, max_length=2)
     name = StringField(required=True, max_length=55, unique=True)
-    url = StringField(required=True, max_length=120, unique=True)
+    address = StringField(required=True, max_length=120, unique=True)
 
     observers = ListField(
         ReferenceField(Observer, reverse_delete_rule=NULLIFY), default=[]
     )
 
     def __str__(self):
-        return f"{self.header} {self.url}"
+        return f"{self.header} {self.address}"
 
     @property
     def header(self):

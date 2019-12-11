@@ -44,14 +44,14 @@ class SessionWebSocket(Thread):
 
     @property
     def url(self):
-        return self.subject.url
+        return self.subject.address
 
     @property
     def header(self):
         return self.subject.header
 
     def set_ws(self):
-        self.ws = WebSocketApp(self.subject.url,
+        self.ws = WebSocketApp(self.subject.address,
                                on_message=self.on_message,
                                on_error=self.on_error)
 
