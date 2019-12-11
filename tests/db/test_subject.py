@@ -17,7 +17,7 @@ class SubjectTestCase(TestCase):
         sub: Subject = Subject.objects.first()
         self.assertEqual(sub.emoji, "🇧🇷")
         self.assertEqual(sub.name, "Decred Brasil")
-        self.assertEqual(sub.address, "wss://split-ticket-svc.stake."
+        self.assertEqual(sub.uri, "wss://split-ticket-svc.stake."
                                   "decredbrasil.com:8477/watchWaitingList")
 
     def test_header(self):
