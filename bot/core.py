@@ -81,6 +81,15 @@ class BotTelegramCore(ABC):
             message_id=message_id
         )
 
+    @classmethod
+    def forward_message(cls, to_chat_id, from_chat_id, message_id):
+        instance = cls.instance()
+        return instance._updater.bot.forward_message(
+            chat_id=to_chat_id,
+            from_chat_id=from_chat_id,
+            message_id=message_id
+        )
+
     def add_handler(self, handler: Handler):
         if not isinstance(handler, Handler):
             raise ValueError("Handler function must be of type Handler!")
