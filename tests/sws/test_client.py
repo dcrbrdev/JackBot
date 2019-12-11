@@ -31,7 +31,7 @@ class SessionWebSocketTestCase(TestCase):
         self.assertIsNone(sws.ws)
         self.assertFalse(sws.ignore_next_update)
 
-        self.assertEqual(sws.url, self.brasil.url)
+        self.assertEqual(sws.uri, self.brasil.uri)
         self.assertEqual(sws.name, self.brasil.name)
         self.assertEqual(sws.header, self.brasil.header)
         self.assertEqual(sws.__str__(), self.brasil.__str__())
@@ -43,7 +43,7 @@ class SessionWebSocketTestCase(TestCase):
         sws.set_ws()
 
         self.assertIsInstance(sws.ws, WebSocketApp)
-        self.assertEqual(sws.ws.url, self.brasil.url)
+        self.assertEqual(sws.ws.url, self.brasil.uri)
 
     def test_get_sws(self):
         SessionWebSocket(self.brasil)
@@ -69,7 +69,7 @@ class SessionWebSocketTestCase(TestCase):
         self.assertIsNone(sws.ws)
         self.assertFalse(sws.ignore_next_update)
 
-        self.assertEqual(sws.url, "wss://split-ticket-svc.stake.decredbrasil"
+        self.assertEqual(sws.uri, "wss://split-ticket-svc.stake.decredbrasil"
                                   ".com:8477/watchWaitingList")
         self.assertEqual(sws.name, "Decred Brasil")
         self.assertEqual(sws.header, "🇧🇷 Decred Brasil")
@@ -79,7 +79,7 @@ class SessionWebSocketTestCase(TestCase):
         self.assertIsNone(sws.ws)
         self.assertFalse(sws.ignore_next_update)
 
-        self.assertEqual(sws.url, "wss://matcher.decredvoting.com:"
+        self.assertEqual(sws.uri, "wss://matcher.decredvoting.com:"
                                   "8477/watchWaitingList")
         self.assertEqual(sws.name, "Decred Voting")
         self.assertEqual(sws.header, "🇺🇸 Decred Voting")

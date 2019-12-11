@@ -26,11 +26,11 @@ class SessionWebSocket(Thread):
         self.subject = subject
 
         super(SessionWebSocket, self).__init__()
-        if SessionWebSocket.sessions.get(self.url):
+        if SessionWebSocket.sessions.get(self.uri):
             raise DuplicatedSessionError(
                 f"A session with subject {subject} is already created!")
 
-        SessionWebSocket.sessions[self.url] = self
+        SessionWebSocket.sessions[self.uri] = self
 
         self.ws = None
         self.ignore_next_update = False
@@ -43,7 +43,7 @@ class SessionWebSocket(Thread):
         return self.subject.name
 
     @property
-    def url(self):
+    def uri(self):
         return self.subject.uri
 
     @property
@@ -90,7 +90,7 @@ class SessionWebSocket(Thread):
 
     @staticmethod
     def on_error(ws, error: Exception):
-        sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
+        sws: SessionWebSocket = SessionWebSocket.get_sws(ws.uri)
         sws.ignore_next_update = True
         logger.warning(error)
 
