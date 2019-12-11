@@ -1,8 +1,12 @@
 from unittest import TestCase
 
-from sws.message import Amount
+import pytest
+
+from tests.fixtures import mongo  # noqa F401
+from db.update_message import Amount
 
 
+@pytest.mark.usefixtures('mongo')
 class AmountTestCase(TestCase):
     def test_init(self):
         instance = Amount(2000000000)

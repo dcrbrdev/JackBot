@@ -67,10 +67,18 @@ class BotTelegramCore(ABC):
     @classmethod
     def send_message(cls, text, chat_id, parse_mode=None):
         instance = cls.instance()
-        instance._updater.bot.send_message(
+        return instance._updater.bot.send_message(
             chat_id=chat_id,
             text=text,
             parse_mode=parse_mode or ParseMode.HTML
+        )
+
+    @classmethod
+    def delete_message(cls, chat_id, message_id):
+        instance = cls.instance()
+        return instance._updater.bot.delete_message(
+            chat_id=chat_id,
+            message_id=message_id
         )
 
     def add_handler(self, handler: Handler):

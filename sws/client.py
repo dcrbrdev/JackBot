@@ -1,12 +1,13 @@
 import ssl
 import logging
-from threading import Thread
+from threading import Thread, Lock
 
 from websocket import WebSocketApp
+from mongoengine.errors import ValidationError
 
 from bot.jack import JackBot
-from db.subscription import Subject
-from sws.message import UpdateMessage
+from db.subject import Subject
+from db.update_message import UpdateMessage
 from sws.exceptions import DuplicatedSessionError, SessionWebSocketNotFoundError
 
 
@@ -19,16 +20,17 @@ logger = logging.getLogger(__name__)
 
 class SessionWebSocket(Thread):
     sessions = {}
+    lock = Lock()
 
     def __init__(self, subject: Subject):
         self.subject = subject
 
         super(SessionWebSocket, self).__init__()
-        if SessionWebSocket.sessions.get(self.url):
+        if SessionWebSocket.sessions.get(self.uri):
             raise DuplicatedSessionError(
                 f"A session with subject {subject} is already created!")
 
-        SessionWebSocket.sessions[self.url] = self
+        SessionWebSocket.sessions[self.uri] = self
 
         self.ws = None
         self.ignore_next_update = False
@@ -41,15 +43,15 @@ class SessionWebSocket(Thread):
         return self.subject.name
 
     @property
-    def url(self):
-        return self.subject.url
+    def uri(self):
+        return self.subject.uri
 
     @property
     def header(self):
         return self.subject.header
 
     def set_ws(self):
-        self.ws = WebSocketApp(self.subject.url,
+        self.ws = WebSocketApp(self.subject.uri,
                                on_message=self.on_message,
                                on_error=self.on_error)
 
@@ -67,20 +69,28 @@ class SessionWebSocket(Thread):
         return sws
 
     @staticmethod
-    def on_message(ws: WebSocketApp, msg):
+    def on_message(ws: WebSocketApp, data):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
         if not sws.ignore_next_update:
-            msg = UpdateMessage.from_msg(sws.header, msg)
-            logger.info(f'SessionUpdateMessage received from {sws.name}')
-            JackBot.instance().send_message(f'{msg}')
-            sws.subject.reload()
-            sws.subject.notify(f'{msg}')
+            try:
+                msg = UpdateMessage.from_data(sws.subject, data)
+                logger.info(f'SessionUpdateMessage received from {sws.name}')
+                sws.subject.reload()
+                logger.info(f'{sws.name} trying to acquire lock...')
+                sws.lock.acquire()
+                logger.info(f'{sws.name} got the lock!')
+                sws.subject.notify(msg)
+                sws.lock.release()
+                logger.info(f'{sws.name} released lock!')
+            except ValidationError as e:
+                logger.info(f"Supress {e} for creating {UpdateMessage} "
+                            f"from empty data on {sws}")
         else:
             sws.ignore_next_update = False
 
     @staticmethod
     def on_error(ws, error: Exception):
-        sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
+        sws: SessionWebSocket = SessionWebSocket.get_sws(ws.uri)
         sws.ignore_next_update = True
         logger.warning(error)
 
@@ -102,6 +112,7 @@ class SessionWebSocket(Thread):
 
 
 if __name__ == "__main__":
+    JackBot.instance()
     logger.info("Creating all SWS's...")
     SessionWebSocket.create_all()
     logger.info(f"SWS's created: {SessionWebSocket.sessions}")

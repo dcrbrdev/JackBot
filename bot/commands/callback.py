@@ -5,7 +5,8 @@ from telegram import Update
 from telegram.ext import CallbackQueryHandler, CallbackContext
 
 from bot.core import BotTelegramCore
-from db.subscription import Subject, Observer
+from db.subject import Subject
+from db.observer import Observer
 from db.exceptions import (ObserverAlreadyRegisteredError,
                            ObserverNotRegisteredError)
 
