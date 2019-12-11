@@ -51,7 +51,7 @@ class BotTelegramCore(ABC):
     def chat(self):
         return self._updater.bot.get_chat(self.chat_id)
 
-    def is_from_oficial_chat(self, update: Update):
+    def is_from_official_chat(self, update: Update):
         return self.chat_id == update.message.chat.id
 
     @property

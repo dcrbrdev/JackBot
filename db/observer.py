@@ -60,7 +60,7 @@ class Observer(Document):
         ).save()
 
     @classmethod
-    def get_oficial_observer(cls):
+    def get_official_observer(cls):
         return cls.objects.get(chat_id=BotTelegramCore.instance().chat_id)
 
 
@@ -74,14 +74,14 @@ class UserObserver(Observer):
         self._send_update_message(update_message)
 
     def _send_update_message(self, update_message):
-        oficial_observer = Observer.get_oficial_observer()
-        last_oficial_message = ObserverMessage\
-            .objects(subject=update_message.subject, observer=oficial_observer)\
+        official_observer = Observer.get_official_observer()
+        last_official_message = ObserverMessage\
+            .objects(subject=update_message.subject, observer=official_observer)\
             .order_by('-datetime').first()
         telegram_message = BotTelegramCore.forward_message(
             to_chat_id=self.chat_id,
-            from_chat_id=oficial_observer.chat_id,
-            message_id=last_oficial_message.message_id
+            from_chat_id=official_observer.chat_id,
+            message_id=last_official_message.message_id
         )
         om = ObserverMessage(
             telegram_message.message_id,
