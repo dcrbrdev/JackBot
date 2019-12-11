@@ -25,13 +25,3 @@ try:
     channel = Observer("@ticketsplitting", "@ticketsplitting").save()
 except NotUniqueError:
     channel = Observer.objects.get(chat_id="@ticketsplitting")
-
-try:
-    brasil.subscribe(channel)
-except ObserverAlreadyRegisteredError:
-    pass
-
-try:
-    voting.subscribe(channel)
-except ObserverAlreadyRegisteredError:
-    pass
