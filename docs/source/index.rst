@@ -10,6 +10,10 @@ Welcome to JackBot's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   bot
+   db
+   sws
+
 
 
 Indices and tables
