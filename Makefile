@@ -29,6 +29,12 @@ flake8:
 pip.install:
 	pip install -r requirements-dev.txt
 
+docs.build:
+	sphinx-build docs/source/ docs/
+
+docs.autodoc:
+	sphinx-apidoc -f -o docs/source .
+
 #################################
 ###### DOCKER DEV COMMANDS ######
 #################################

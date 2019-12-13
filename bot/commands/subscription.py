@@ -8,7 +8,7 @@ from telegram.ext import CommandHandler, CallbackContext
 from bot.core import BotTelegramCore
 from bot.utils import build_menu
 from db.subject import Subject
-from db.observer import Observer
+from db.observer import UserObserver
 
 
 logging.basicConfig(
@@ -22,10 +22,10 @@ def subscribe(update: Update, context: CallbackContext):
     chat = update.effective_chat
 
     try:
-        observer = Observer.objects.get(chat_id=f"{chat.id}")
+        observer = UserObserver.objects.get(chat_id=f"{chat.id}")
     except DoesNotExist:
-        observer = Observer(f"{chat.id}",
-                            f"{chat.username}").save()
+        observer = UserObserver(f"{chat.username}",
+                                f"{chat.id}").save()
 
     subscribed_subjects = Subject.objects(observers=observer)
     avaliable_subjects = [subject for subject in Subject.objects()
@@ -51,7 +51,7 @@ def subscribe(update: Update, context: CallbackContext):
 def unsubscribe(update: Update, context: CallbackContext):
     chat = update.effective_chat
 
-    observer = Observer.objects.get(chat_id=f"{chat.id}")
+    observer = UserObserver.objects.get(chat_id=f"{chat.id}")
 
     subscribed_subjects = Subject.objects(observers=observer)
 
@@ -76,7 +76,7 @@ def unsubscribe(update: Update, context: CallbackContext):
 def subscriptions(update: Update, context: CallbackContext):
     chat = update.effective_chat
 
-    observer = Observer.objects.get(chat_id=f"{chat.id}")
+    observer = UserObserver.objects.get(chat_id=f"{chat.id}")
 
     subscribed_subjects = Subject.objects(observers=observer)
 
