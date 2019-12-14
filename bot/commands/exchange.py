@@ -16,15 +16,30 @@ logger = logging.getLogger(__name__)
 
 
 def dcr(update: Update, context: CallbackContext):
-    try:
-        target_coin = context.args[0]
-    except TypeError:
-        target_coin = 'USD'
+    target_currency = None
+    dcr_amount = None
 
     try:
-        dcr_amount = context.args[1]
-    except TypeError:
+        arg_0 = context.args[0]
+        if arg_0.isdigit():
+            dcr_amount = float(arg_0)
+        else:
+            target_currency = arg_0.upper()
+    except IndexError:
         dcr_amount = 1
+        target_currency = "USD"
+
+    try:
+        arg_1 = context.args[1]
+        if arg_1.isdigit():
+            dcr_amount = float(arg_1)
+        else:
+            target_currency = arg_1.upper()
+    except IndexError:
+        if target_currency is None:
+            target_currency = "USD"
+        if dcr_amount is None:
+            dcr_amount = 1
 
     try:
         target_value = convert_dcr(dcr_amount, target_currency)
