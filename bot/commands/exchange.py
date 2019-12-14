@@ -47,7 +47,8 @@ def dcr(update: Update, context: CallbackContext):
         update.effective_message.reply_text(f"{e}")
         return
     except DcrDataAPIError as e:
-        update.effective_message.reply_text("Error requests data from DCRData API.\n"
+        update.effective_message.reply_text("Error requests data from "
+                                            "DCRData API.\n "
                                             "Please contact my managers!")
         update.effective_message.reply_text(f"{e}")
         return

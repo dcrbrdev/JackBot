@@ -28,10 +28,13 @@ def convert_dcr(dcr_amount: float, target_currency: str):
     if target_currency == 'USD':
         return dcr_amount*dcr_to_usd_value
 
-    exchangerate_response = requests.get(f"https://api.exchangeratesapi.io/latest?base=USD&symbols={target_currency}")
+    exchangerate_response = requests.get(f"https://api.exchangeratesapi.io/"
+                                         f"latest?base=USD"
+                                         f"&symbols={target_currency}")
     if exchangerate_response.status_code != 200:
         raise ExchangeAPIError(f"Currency {target_currency} is not valid!\n"
-                               f"Choose one from https://api.exchangeratesapi.io/latest")
+                               f"Choose one from "
+                               f"https://api.exchangeratesapi.io/latest")
 
     usd_to_target_value = json.loads(exchangerate_response.content)
     usd_to_target_value = usd_to_target_value.get("rates").get(target_currency)
