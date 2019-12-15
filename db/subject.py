@@ -7,7 +7,7 @@ from mongoengine import (
 
 from db.exceptions import (ObserverNotRegisteredError,
                            ObserverAlreadyRegisteredError)
-from db.observer import Observer
+from db.observer import Observer, UserObserver
 
 
 logging.basicConfig(
@@ -23,7 +23,7 @@ class Subject(Document):
     uri = StringField(required=True, max_length=120, unique=True)
 
     observers = ListField(
-        ReferenceField(Observer, reverse_delete_rule=NULLIFY), default=[]
+        ReferenceField(UserObserver, reverse_delete_rule=NULLIFY), default=[]
     )
 
     def __str__(self):
@@ -48,6 +48,10 @@ class Subject(Document):
         self.save()
 
     def notify(self, update_message):
+        official_observer = Observer.get_official_observer()
+        logger.info(f'Notifying official observer {official_observer} '
+                    f'for {self}')
+        official_observer.notify(update_message)
         logger.info(f'Notifying observers {self.observers} for {self}')
         for observer in self.observers:
             observer.notify(update_message)

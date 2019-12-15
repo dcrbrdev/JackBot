@@ -51,7 +51,7 @@ class BotTelegramCore(ABC):
     def chat(self):
         return self._updater.bot.get_chat(self.chat_id)
 
-    def is_from_oficial_chat(self, update: Update):
+    def is_from_official_chat(self, update: Update):
         return self.chat_id == update.message.chat.id
 
     @property
@@ -78,6 +78,15 @@ class BotTelegramCore(ABC):
         instance = cls.instance()
         return instance._updater.bot.delete_message(
             chat_id=chat_id,
+            message_id=message_id
+        )
+
+    @classmethod
+    def forward_message(cls, to_chat_id, from_chat_id, message_id):
+        instance = cls.instance()
+        return instance._updater.bot.forward_message(
+            chat_id=to_chat_id,
+            from_chat_id=from_chat_id,
             message_id=message_id
         )
 
