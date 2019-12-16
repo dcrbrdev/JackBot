@@ -5,7 +5,6 @@ from mongoengine import (
     Document,
     StringField, IntField, ListField, DateTimeField,
     ReferenceField, NULLIFY)
-from mongoengine.errors import DoesNotExist
 from telegram.error import BadRequest
 
 from bot.core import BotTelegramCore

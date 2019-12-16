@@ -55,7 +55,8 @@ def unsubscribe(update: Update, context: CallbackContext):
     try:
         observer = UserObserver.objects.get(chat_id=f"{chat.id}")
     except DoesNotExist:
-        message.reply_text(f"Observer with chat_id {chat.id} doesn't exist!\nCall /subscribe before")
+        message.reply_text(f"Observer with chat_id {chat.id} doesn't exist!\n"
+                           f"Call /subscribe before")
         return
 
     subscribed_subjects = Subject.objects(observers=observer)
@@ -84,7 +85,8 @@ def subscriptions(update: Update, context: CallbackContext):
     try:
         observer = UserObserver.objects.get(chat_id=f"{chat.id}")
     except DoesNotExist:
-        message.reply_text(f"Observer with chat_id {chat.id} doesn't exist!\nCall /subscribe before")
+        message.reply_text(f"Observer with chat_id {chat.id} doesn't exist!\n"
+                           f"Call /subscribe before")
         return
 
     subscribed_subjects = Subject.objects(observers=observer)

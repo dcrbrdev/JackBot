@@ -20,21 +20,17 @@ def dcr(update: Update, context: CallbackContext):
     dcr_amount = None
 
     try:
-        arg_0 = context.args[0]
-        if arg_0.isdigit():
-            dcr_amount = float(arg_0)
-        else:
-            target_currency = arg_0.upper()
+        dcr_amount = float(context.args[0])
+    except ValueError:
+        target_currency = context.args[0].upper()
     except IndexError:
         dcr_amount = 1
         target_currency = "USD"
 
     try:
-        arg_1 = context.args[1]
-        if arg_1.isdigit():
-            dcr_amount = float(arg_1)
-        else:
-            target_currency = arg_1.upper()
+        dcr_amount = float(context.args[1])
+    except ValueError:
+        target_currency = context.args[1].upper()
     except IndexError:
         if target_currency is None:
             target_currency = "USD"
