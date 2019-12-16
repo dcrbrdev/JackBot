@@ -48,6 +48,7 @@ class Subject(Document):
         self.save()
 
     def notify(self, update_message):
+        self.reload()
         official_observer = Observer.get_official_observer()
         logger.info(f'Notifying official observer {official_observer} '
                     f'for {self}')

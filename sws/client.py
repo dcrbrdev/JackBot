@@ -75,7 +75,6 @@ class SessionWebSocket(Thread):
             try:
                 msg = UpdateMessage.from_data(sws.subject, data)
                 logger.info(f'SessionUpdateMessage received from {sws.name}')
-                sws.subject.reload()
                 logger.info(f'{sws.name} trying to acquire lock...')
                 sws.lock.acquire()
                 logger.info(f'{sws.name} got the lock!')
