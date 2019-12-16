@@ -48,6 +48,7 @@ class Observer(Document):
                f"{self.chat_id}".strip()
 
     def notify(self, update_message):
+        self.reload()
         self._send_update_message(update_message)
 
     def _send_update_message(self, update_message):
@@ -70,6 +71,7 @@ class UserObserver(Observer):
     )
 
     def notify(self, update_message):
+        self.reload()
         self._remove_last_message_from_subject(update_message.subject)
         self._send_update_message(update_message)
 
@@ -93,25 +95,16 @@ class UserObserver(Observer):
         self.save()
 
     def _remove_last_message_from_subject(self, subject):
-        self.reload()
-        try:
-            observer_messages = filter(
-                lambda x: (isinstance(x, ObserverMessage)
-                           and x.subject == subject),
-                self.messages
-            )
+        for om in self.messages:
+            try:
+                if om.subject == subject:
+                    BotTelegramCore.delete_message(self.chat_id, om.message_id)
+                    self._delete_message(om)
+            except (AttributeError, BadRequest):
+                self._delete_message(om)
 
-            for om in observer_messages:
-                BotTelegramCore.delete_message(self.chat_id, om.message_id)
-
-            for om in self.messages:
-                self.messages.remove(om)
-                om.delete()
-
-            self.save()
-        except DoesNotExist:
-            pass
-        except BadRequest as e:
-            logger.warning(f'BadRequest {e}')
-        except Exception as e:
-            logger.error(e)
+    def _delete_message(self, om: ObserverMessage):
+        self.messages.remove(om)
+        if isinstance(om, ObserverMessage):
+            om.delete()
+        self.save()
