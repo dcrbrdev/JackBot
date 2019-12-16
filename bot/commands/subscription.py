@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 def subscribe(update: Update, context: CallbackContext):
     chat = update.effective_chat
+    message = update.effective_message
 
     try:
         observer = UserObserver.objects.get(chat_id=f"{chat.id}")
@@ -43,15 +44,19 @@ def subscribe(update: Update, context: CallbackContext):
     ]
     menu = InlineKeyboardMarkup(build_menu(buttons_list, n_cols=1))
 
-    context.bot.send_message(chat.id,
-                             "<b>Avaliable subjects</b>",
-                             parse_mode='HTML', reply_markup=menu)
+    message.reply_text("<b>Avaliable subjects</b>",
+                       parse_mode='HTML', reply_markup=menu)
 
 
 def unsubscribe(update: Update, context: CallbackContext):
     chat = update.effective_chat
+    message = update.effective_message
 
-    observer = UserObserver.objects.get(chat_id=f"{chat.id}")
+    try:
+        observer = UserObserver.objects.get(chat_id=f"{chat.id}")
+    except DoesNotExist:
+        message.reply_text(f"Observer with chat_id {chat.id} doesn't exist!\nCall /subscribe before")
+        return
 
     subscribed_subjects = Subject.objects(observers=observer)
 
@@ -68,15 +73,19 @@ def unsubscribe(update: Update, context: CallbackContext):
 
     menu = InlineKeyboardMarkup(build_menu(buttons_list, n_cols=1))
 
-    context.bot.send_message(chat.id,
-                             "<b>Subscribed subjects</b>",
-                             parse_mode='HTML', reply_markup=menu)
+    message.reply_text("<b>Subscribed subjects</b>",
+                       parse_mode='HTML', reply_markup=menu)
 
 
 def subscriptions(update: Update, context: CallbackContext):
     chat = update.effective_chat
+    message = update.effective_message
 
-    observer = UserObserver.objects.get(chat_id=f"{chat.id}")
+    try:
+        observer = UserObserver.objects.get(chat_id=f"{chat.id}")
+    except DoesNotExist:
+        message.reply_text(f"Observer with chat_id {chat.id} doesn't exist!\nCall /subscribe before")
+        return
 
     subscribed_subjects = Subject.objects(observers=observer)
 
@@ -86,7 +95,7 @@ def subscriptions(update: Update, context: CallbackContext):
         text += subject.__str__()
         text += '\n' if index != len(subscribed_subjects) else ''
 
-    context.bot.send_message(chat.id, text, parse_mode='HTML')
+    message.reply_text(text, parse_mode='HTML')
 
 
 def config_handlers(instance: BotTelegramCore):
