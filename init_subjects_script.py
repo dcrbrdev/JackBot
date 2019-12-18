@@ -23,6 +23,15 @@ except NotUniqueError:
 
 
 try:
+    split = Subject("🏴‍☠️", "99split",
+                    "wss://split.99split.com:8477/"
+                    "watchWaitingList",
+                    "99split").save()
+except NotUniqueError:
+    split = Subject.objects.get(name="99split")
+
+
+try:
     channel = Observer("@ticketsplitting", "@ticketsplitting").save()
 except NotUniqueError:
     channel = Observer.objects.get(chat_id="@ticketsplitting")
