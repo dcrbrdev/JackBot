@@ -12,49 +12,57 @@ class SubjectTestCase(TestCase):
     def test_create(self):
         Subject("🇧🇷", "Decred Brasil",
                 "wss://split-ticket-svc.stake.decredbrasil"
-                ".com:8477/watchWaitingList").save()
+                ".com:8477/watchWaitingList",
+                "dcrbr1").save()
         self.assertEqual(Subject.objects.count(), 1)
         sub: Subject = Subject.objects.first()
         self.assertEqual(sub.emoji, "🇧🇷")
         self.assertEqual(sub.name, "Decred Brasil")
         self.assertEqual(sub.uri, "wss://split-ticket-svc.stake."
                                   "decredbrasil.com:8477/watchWaitingList")
+        self.assertEqual(sub.default_session, "dcrbr1")
 
     def test_header(self):
         Subject("🇧🇷", "Decred Brasil",
                 "wss://split-ticket-svc.stake.decredbrasil"
-                ".com:8477/watchWaitingList").save()
+                ".com:8477/watchWaitingList",
+                "dcrbr1").save()
         sub: Subject = Subject.objects.first()
         self.assertEqual(sub.header, "🇧🇷 Decred Brasil")
 
     def test_str(self):
         Subject("🇧🇷", "Decred Brasil",
                 "wss://split-ticket-svc.stake.decredbrasil"
-                ".com:8477/watchWaitingList").save()
+                ".com:8477/watchWaitingList",
+                "dcrbr1").save()
         sub: Subject = Subject.objects.first()
         self.assertEqual(sub.__str__(),
                          "🇧🇷 Decred Brasil wss://split-ticket-svc.stake"
                          ".decredbrasil.com:8477/watchWaitingList")
 
     def test_unique_url(self):
-        Subject("🇧", "Decred Brasil",
+        Subject("🇧🇷", "Decred Brasil",
                 "wss://split-ticket-svc.stake.decredbrasil"
-                ".com:8477/watchWaitingList").save()
+                ".com:8477/watchWaitingList",
+                "dcrbr1").save()
         self.assertEqual(Subject.objects.count(), 1)
 
         sub_2 = Subject("🇧🇷", "ASDDecred Brasil",
                         "wss://split-ticket-svc.stake.decredbrasil"
-                        ".com:8477/watchWaitingList")
+                        ".com:8477/watchWaitingList",
+                        "asdasd")
         self.assertRaises(NotUniqueError, sub_2.save)
         self.assertEqual(Subject.objects.count(), 1)
 
     def test_unique_header(self):
         Subject("🇧🇷", "Decred Brasil",
                 "wss://split-ticket-svc.stake.decredbrasil"
-                ".com:8477/watchWaitingList").save()
+                ".com:8477/watchWaitingList",
+                "dcrbr1").save()
         self.assertEqual(Subject.objects.count(), 1)
 
         sub_2 = Subject("🇧🇷", "Decred Brasil",
-                        "wss://asdasdtbrasil.com:8477/watchWaitingList")
+                        "wss://asdasdtbrasil.com:8477/watchWaitingList",
+                        "asdasd")
         self.assertRaises(NotUniqueError, sub_2.save)
         self.assertEqual(Subject.objects.count(), 1)

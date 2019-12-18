@@ -21,6 +21,7 @@ class Subject(Document):
     emoji = StringField(required=True, max_length=5)
     name = StringField(required=True, max_length=55, unique=True)
     uri = StringField(required=True, max_length=120, unique=True)
+    default_session = StringField(required=True, max_length=55)
 
     observers = ListField(
         ReferenceField(UserObserver, reverse_delete_rule=NULLIFY), default=[]
