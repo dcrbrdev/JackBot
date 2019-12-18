@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class Subject(Document):
-    emoji = StringField(required=True, max_length=2)
+    emoji = StringField(required=True, max_length=5)
     name = StringField(required=True, max_length=55, unique=True)
     uri = StringField(required=True, max_length=120, unique=True)
 
