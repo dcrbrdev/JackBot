@@ -18,7 +18,8 @@ def build_menu(buttons,
 
 
 def convert_dcr(dcr_amount: float, target_currency: str):
-    dcrdata_response = requests.get(f"https://dcrdata.decred.org/api/exchanges?code={target_currency}")
+    dcrdata_response = requests.get(f"https://dcrdata.decred.org/api/exchanges?"
+                                    f"code={target_currency}")
     if dcrdata_response.status_code != 200:
         raise DcrDataAPIError(dcrdata_response.content)
 
