@@ -29,7 +29,6 @@ class SessionWebSocketTestCase(TestCase):
 
         self.assertEqual(sws.subject, self.brasil)
         self.assertIsNone(sws.ws)
-        self.assertFalse(sws.ignore_next_update)
 
         self.assertEqual(sws.uri, self.brasil.uri)
         self.assertEqual(sws.name, self.brasil.name)
@@ -67,7 +66,6 @@ class SessionWebSocketTestCase(TestCase):
         sws = SessionWebSocket.get_sws("wss://split-ticket-svc.stake."
                                        "decredbrasil.com:8477/watchWaitingList")
         self.assertIsNone(sws.ws)
-        self.assertFalse(sws.ignore_next_update)
 
         self.assertEqual(sws.uri, "wss://split-ticket-svc.stake.decredbrasil"
                                   ".com:8477/watchWaitingList")
@@ -77,7 +75,6 @@ class SessionWebSocketTestCase(TestCase):
         sws = SessionWebSocket.get_sws("wss://matcher.decredvoting"
                                        ".com:8477/watchWaitingList")
         self.assertIsNone(sws.ws)
-        self.assertFalse(sws.ignore_next_update)
 
         self.assertEqual(sws.uri, "wss://matcher.decredvoting.com:"
                                   "8477/watchWaitingList")
