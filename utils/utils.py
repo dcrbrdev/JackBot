@@ -2,7 +2,8 @@ import json
 
 import requests
 
-from bot.exceptions import DcrDataAPIError, ExchangeAPIError
+from utils.exceptions import ExchangeAPIError
+from utils.dcrdata import request_dcr_data
 
 
 def build_menu(buttons,
@@ -18,11 +19,8 @@ def build_menu(buttons,
 
 
 def convert_dcr(dcr_amount: float, target_currency: str):
-    dcrdata_response = requests.get("https://dcrdata.decred.org/api/exchanges")
-    if dcrdata_response.status_code != 200:
-        raise DcrDataAPIError(dcrdata_response.content)
-
-    dcr_to_usd_value = json.loads(dcrdata_response.content)
+    endpoint = "exchanges"
+    dcr_to_usd_value = request_dcr_data(endpoint)
     dcr_to_usd_value = dcr_to_usd_value.get("price")
 
     if target_currency == 'USD':
