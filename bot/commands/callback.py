@@ -7,8 +7,8 @@ from telegram.ext import CallbackQueryHandler, CallbackContext
 from bot.core import BotTelegramCore
 from db.subject import Subject
 from db.observer import Observer
-from db.exceptions import (ObserverAlreadyRegisteredError,
-                           ObserverNotRegisteredError)
+from utils.exceptions import (ObserverAlreadyRegisteredError,
+                              ObserverNotRegisteredError)
 
 
 logging.basicConfig(
