@@ -4,8 +4,8 @@ from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext
 
 from bot.core import BotTelegramCore
-from bot.utils import convert_dcr
-from bot.exceptions import DcrDataAPIError, ExchangeAPIError
+from utils.utils import convert_dcr
+from utils.exceptions import DcrDataAPIError, ExchangeAPIError
 
 
 logging.basicConfig(

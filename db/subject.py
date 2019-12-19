@@ -5,8 +5,8 @@ from mongoengine import (
     StringField, ListField,
     ReferenceField, NULLIFY)
 
-from db.exceptions import (ObserverNotRegisteredError,
-                           ObserverAlreadyRegisteredError)
+from utils.exceptions import (ObserverNotRegisteredError,
+                              ObserverAlreadyRegisteredError)
 from db.observer import Observer, UserObserver
 
 

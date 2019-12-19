@@ -6,7 +6,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CommandHandler, CallbackContext
 
 from bot.core import BotTelegramCore
-from bot.utils import build_menu
+from utils.utils import build_menu
 from db.subject import Subject
 from db.observer import UserObserver
 
