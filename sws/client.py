@@ -34,7 +34,6 @@ class SessionWebSocket(Thread):
         SessionWebSocket.sessions[self.uri] = self
 
         self.ws = None
-        self.ignore_next_update = False
 
     def __str__(self):
         return f"{self.subject}"
@@ -72,26 +71,21 @@ class SessionWebSocket(Thread):
     @staticmethod
     def on_message(ws: WebSocketApp, data):
         sws: SessionWebSocket = SessionWebSocket.get_sws(ws.url)
-        if not sws.ignore_next_update:
-            try:
-                msg = UpdateMessage.from_data(sws.subject, data)
-                logger.info(f'SessionUpdateMessage received from {sws.name}')
-                logger.info(f'{sws.name} trying to acquire lock...')
-                sws.lock.acquire()
-                logger.info(f'{sws.name} got the lock!')
-                sws.subject.notify(msg)
-                sws.lock.release()
-                logger.info(f'{sws.name} released lock!')
-            except (ValidationError, DuplicatedUpdateMessageError) as e:
-                logger.info(f"Supress {e} for creating {UpdateMessage} "
-                            f"from {data} on {sws}")
-        else:
-            sws.ignore_next_update = False
+        try:
+            msg = UpdateMessage.from_data(sws.subject, data)
+            logger.info(f'SessionUpdateMessage received from {sws.name}')
+            logger.info(f'{sws.name} trying to acquire lock...')
+            sws.lock.acquire()
+            logger.info(f'{sws.name} got the lock!')
+            sws.subject.notify(msg)
+            sws.lock.release()
+            logger.info(f'{sws.name} released lock!')
+        except (ValidationError, DuplicatedUpdateMessageError) as e:
+            logger.info(f"Supress {e} for creating {UpdateMessage} "
+                        f"from {data} on {sws}")
 
     @staticmethod
     def on_error(ws, error: Exception):
-        sws: SessionWebSocket = SessionWebSocket.get_sws(ws.uri)
-        sws.ignore_next_update = True
         logger.warning(error)
 
     @classmethod
