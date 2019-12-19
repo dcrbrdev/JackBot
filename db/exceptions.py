@@ -6,3 +6,7 @@ class ObserverNotRegisteredError(Exception):
 
 class ObserverAlreadyRegisteredError(Exception):
     pass
+
+
+class DuplicatedUpdateMessageError(Exception):
+    pass
