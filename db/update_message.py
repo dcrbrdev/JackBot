@@ -7,6 +7,7 @@ from mongoengine import (
     EmbeddedDocumentListField, ReferenceField)
 
 from db.subject import Subject
+from db.ticket import TicketPrice
 
 
 class Amount(EmbeddedDocument):
@@ -57,6 +58,7 @@ class UpdateMessage(Document):
 
     def __str__(self):
         string = f"<b>{self.subject.header}</b>\n\n"
+        string += f"Ticket price: {TicketPrice.get_last()}\n\n"
         for index, msg in enumerate(self.sessions):
             string += f"<code>{msg}</code>"
             string += "\n\n" if index != len(self.sessions) - 1 else ""

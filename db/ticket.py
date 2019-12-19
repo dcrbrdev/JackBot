@@ -29,7 +29,7 @@ class TicketPrice(Document):
     }
 
     def __str__(self):
-        return f"Date: {self.datetime} - Price: {self.price}"
+        return f"{self.price:.2f} DCR"
 
     @property
     def pendulum_datetime(self):
