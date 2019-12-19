@@ -48,7 +48,8 @@ class UpdateMessageTestCase(TestCase):
 
     def test_get_last_by_subject(self):
         UpdateMessage(self.subject, [Session('test', [Amount(10)])]).save()
-        other = UpdateMessage(self.subject, [Session('test', [Amount(11)])]).save()
+        other = UpdateMessage(self.subject,
+                              [Session('test', [Amount(11)])]).save()
 
         last = UpdateMessage.get_last_by_subject(self.subject)
         self.assertEqual(other, last)
@@ -74,14 +75,16 @@ class UpdateMessageTestCase(TestCase):
         self.assertEqual(UpdateMessage.objects.count(), 0)
         UpdateMessage.from_data(self.subject, DATA)
         self.assertEqual(UpdateMessage.objects.count(), 1)
-        self.assertRaises(DuplicatedUpdateMessageError, UpdateMessage.from_data, self.subject, DATA)
+        self.assertRaises(DuplicatedUpdateMessageError,
+                          UpdateMessage.from_data, self.subject, DATA)
         self.assertEqual(UpdateMessage.objects.count(), 1)
 
     def test_from_sessions_2(self):
         self.assertEqual(UpdateMessage.objects.count(), 0)
         UpdateMessage.from_data(self.subject, DATA)
         self.assertEqual(UpdateMessage.objects.count(), 1)
-        self.assertRaises(DuplicatedUpdateMessageError, UpdateMessage.from_data, self.subject, DATA)
+        self.assertRaises(DuplicatedUpdateMessageError,
+                          UpdateMessage.from_data, self.subject, DATA)
         self.assertEqual(UpdateMessage.objects.count(), 1)
         UpdateMessage.from_data(self.subject, DATA2)
         self.assertEqual(UpdateMessage.objects.count(), 2)
