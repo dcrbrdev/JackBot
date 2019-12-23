@@ -14,10 +14,12 @@ class SessionWebSocketTestCase(TestCase):
     def setUp(self) -> None:
         self.brasil = Subject("🇧🇷", "Decred Brasil",
                               "wss://split-ticket-svc.stake.decredbrasil"
-                              ".com:8477/watchWaitingList").save()
+                              ".com:8477/watchWaitingList",
+                              "dcrbr1").save()
         self.voting = Subject("🇺🇸", "Decred Voting",
                               "wss://matcher.decredvoting.com:8477/"
-                              "watchWaitingList").save()
+                              "watchWaitingList",
+                              "decredvoting1").save()
 
     def tearDown(self):
         SessionWebSocket.sessions = {}

@@ -37,6 +37,9 @@ class ObserverMessage(Document):
 class Observer(Document):
     username = StringField(max_length=50)
     chat_id = StringField(required=True, max_length=50, unique=True)
+    messages = ListField(
+        ReferenceField(ObserverMessage, reverse_delete_rule=NULLIFY)
+    )
 
     meta = {
         'allow_inheritance': True
@@ -48,46 +51,14 @@ class Observer(Document):
 
     def notify(self, update_message):
         self.reload()
+        self._remove_last_message_from_subject(update_message.subject)
         self._send_update_message(update_message)
 
     def _send_update_message(self, update_message):
         telegram_message = BotTelegramCore.send_message(
             f'{update_message}', chat_id=self.chat_id)
-        ObserverMessage(
-            telegram_message.message_id,
-            update_message.subject,
-            self
-        ).save()
-
-    @classmethod
-    def get_official_observer(cls):
-        return cls.objects.get(chat_id=BotTelegramCore.instance().chat_id)
-
-
-class UserObserver(Observer):
-    messages = ListField(
-        ReferenceField(ObserverMessage, reverse_delete_rule=NULLIFY)
-    )
-
-    def notify(self, update_message):
-        self.reload()
-        self._remove_last_message_from_subject(update_message.subject)
-        self._send_update_message(update_message)
-
-    def _send_update_message(self, update_message):
-        subject = update_message.subject
-
-        official_observer = Observer.get_official_observer()
-        last_official_message = ObserverMessage\
-            .objects(subject=subject,
-                     observer=official_observer)\
-            .order_by('-datetime').first()
-        telegram_message = BotTelegramCore.forward_message(
-            to_chat_id=self.chat_id,
-            from_chat_id=official_observer.chat_id,
-            message_id=last_official_message.message_id
-        )
-        self._create_message(telegram_message.message_id, subject)
+        self._create_message(telegram_message.message_id,
+                             update_message.subject)
 
     def _remove_last_message_from_subject(self, subject):
         for om in self.messages:
@@ -112,3 +83,24 @@ class UserObserver(Observer):
         ).save()
         self.messages.append(om)
         self.save()
+
+    @classmethod
+    def get_official_observer(cls):
+        return cls.objects.get(chat_id=BotTelegramCore.instance().chat_id)
+
+
+class UserObserver(Observer):
+    def _send_update_message(self, update_message):
+        subject = update_message.subject
+
+        official_observer = Observer.get_official_observer()
+        last_official_message = ObserverMessage\
+            .objects(subject=subject,
+                     observer=official_observer)\
+            .order_by('-datetime').first()
+        telegram_message = BotTelegramCore.forward_message(
+            to_chat_id=self.chat_id,
+            from_chat_id=official_observer.chat_id,
+            message_id=last_official_message.message_id
+        )
+        self._create_message(telegram_message.message_id, subject)

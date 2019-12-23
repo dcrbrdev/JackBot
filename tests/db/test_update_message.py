@@ -22,7 +22,8 @@ class UpdateMessageTestCase(TestCase):
     def setUp(self) -> None:
         self.subject = Subject("🇧🇷", "Decred Brasil",
                                "wss://split-ticket-svc.stake.decredbrasil"
-                               ".com:8477/watchWaitingList").save()
+                               ".com:8477/watchWaitingList",
+                               "dcrbr1").save()
 
     def test_init(self):
         self.assertEqual(UpdateMessage.objects.count(), 0)
