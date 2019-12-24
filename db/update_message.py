@@ -69,7 +69,7 @@ class Session(EmbeddedDocument):
 
 class UpdateMessage(Document):
     subject = ReferenceField(Subject, required=True)
-    sessions = EmbeddedDocumentListField(Session, required=True)
+    sessions = EmbeddedDocumentListField(Session)
     datetime = DateTimeField(default=pendulum.now, required=True)
 
     meta = {
