@@ -5,7 +5,7 @@ from telegram.ext import CommandHandler, CallbackContext
 
 from bot.core import BotTelegramCore
 from utils.utils import convert_dcr
-from utils.exceptions import DcrDataAPIError, ExchangeAPIError
+from utils.exceptions import DcrDataAPIError
 
 
 logging.basicConfig(
@@ -39,9 +39,6 @@ def dcr(update: Update, context: CallbackContext):
 
     try:
         target_value = convert_dcr(dcr_amount, target_currency)
-    except ExchangeAPIError as e:
-        update.effective_message.reply_text(f"{e}")
-        return
     except DcrDataAPIError as e:
         update.effective_message.reply_text("Error requests data from "
                                             "DCRData API.\n "

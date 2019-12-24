@@ -58,6 +58,7 @@ class UpdateMessage(Document):
 
     def __str__(self):
         string = f"<b>{self.subject.header}</b>\n\n"
+        string += f"<i>Default session: {self.subject.default_session}</i>\n\n"
         string += f"Ticket price: {TicketPrice.get_last()}\n\n"
         for index, msg in enumerate(self.sessions):
             string += f"<code>{msg}</code>"
