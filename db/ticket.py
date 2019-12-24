@@ -1,4 +1,5 @@
 import logging
+from threading import Lock
 
 import pendulum
 from mongoengine import (
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class TicketPrice(Document):
+    lock = Lock()
     endpoint = "stake/diff"
 
     price = FloatField(required=True)
@@ -49,6 +51,7 @@ class TicketPrice(Document):
 
     @classmethod
     def get_last(cls):
+        cls.lock.acquire()
         last_ticket_price = cls.objects.order_by('-datetime').first()
 
         try:
@@ -59,4 +62,5 @@ class TicketPrice(Document):
         finally:
             last_ticket_price.save()
 
+        cls.lock.release()
         return last_ticket_price
