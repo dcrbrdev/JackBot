@@ -13,6 +13,16 @@ class AmountTestCase(TestCase):
         self.assertEqual(instance._value, 2000000000)
         self.assertIsInstance(instance, Amount)
 
+    def test_equal(self):
+        instance = Amount(2000000000)
+        other = Amount(2000000000)
+        self.assertTrue(instance.equal(other))
+
+    def test_equal_false(self):
+        instance = Amount(2000000000)
+        other = Amount(2500000000)
+        self.assertFalse(instance.equal(other))
+
     def test_value_get(self):
         instance = Amount(2000000000)
         self.assertEqual(instance._value, 2000000000)
