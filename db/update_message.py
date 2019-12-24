@@ -8,7 +8,7 @@ from mongoengine import (
 
 from db.subject import Subject
 from db.ticket import TicketPrice
-from db.exceptions import DuplicatedUpdateMessageError
+from utils.exceptions import DuplicatedUpdateMessageError
 
 
 class Amount(EmbeddedDocument):
