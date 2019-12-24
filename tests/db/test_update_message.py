@@ -5,7 +5,7 @@ import pytest
 from tests.fixtures import mongo  # noqa F401
 from db.update_message import UpdateMessage, Session, Amount
 from db.subject import Subject
-from db.exceptions import DuplicatedUpdateMessageError
+from utils.exceptions import DuplicatedUpdateMessageError
 
 
 DATA = '[{"name":"c17b1828e97bf66abd5329e7' \

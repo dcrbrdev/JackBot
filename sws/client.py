@@ -8,7 +8,7 @@ from mongoengine.errors import ValidationError
 from bot.jack import JackBot
 from db.subject import Subject
 from db.update_message import UpdateMessage
-from db.exceptions import DuplicatedUpdateMessageError
+from utils.exceptions import DuplicatedUpdateMessageError
 from sws.exceptions import DuplicatedSessionError, SessionWebSocketNotFoundError
 
 
