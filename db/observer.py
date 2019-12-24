@@ -26,7 +26,7 @@ class ObserverMessage(Document):
     meta = {
         'ordering': ['datetime'],
         'indexes': [
-            {'fields': ['datetime'], 'expireAfterSeconds': 1*24*60*60}
+            {'fields': ['datetime'], 'expireAfterSeconds': 7*24*60*60}
         ]
     }
 

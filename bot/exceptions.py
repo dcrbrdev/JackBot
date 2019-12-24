@@ -1,3 +1,0 @@
-
-class DcrDataAPIError(Exception):
-    pass

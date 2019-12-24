@@ -7,6 +7,7 @@ from mongoengine import (
     EmbeddedDocumentListField, ReferenceField)
 
 from db.subject import Subject
+from db.ticket import TicketPrice
 
 
 class Amount(EmbeddedDocument):
@@ -56,8 +57,9 @@ class UpdateMessage(Document):
     datetime = DateTimeField(default=pendulum.now, required=True)
 
     def __str__(self):
-        string = f"<b>{self.subject.header}</b>\n"
-        string += f"<i>default session: {self.subject.default_session}</i>\n\n"
+        string = f"<b>{self.subject.header}</b>\n\n"
+        string += f"<i>Default session: {self.subject.default_session}</i>\n\n"
+        string += f"Ticket price: {TicketPrice.get_last()}\n\n"
         for index, msg in enumerate(self.sessions):
             string += f"<code>{msg}</code>"
             string += "\n\n" if index != len(self.sessions) - 1 else ""

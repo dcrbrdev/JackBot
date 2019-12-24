@@ -1,4 +1,7 @@
 
+class DcrDataAPIError(Exception):
+    pass
+
 
 class ObserverNotRegisteredError(Exception):
     pass
