@@ -14,7 +14,7 @@ latest_name = latest.get('name')
 base_dir = f"./{latest_name}/"
 tarfile_name = f"{base_dir}{latest_name}.tar.gz"
 
-subprocess.call(["mkdir", base_dir])
+subprocess.run(["mkdir", base_dir])
 
 with open(tarfile_name, 'wb') as file:
     file.write(latest_tarball.content)
@@ -25,10 +25,10 @@ with tarfile.open(tarfile_name) as tar:
 
 source_dir = f"{base_dir}/{subfolder_name}/"
 dest_dir = "./"
-subprocess.call(['rsync', '-av', source_dir, dest_dir])
+subprocess.run(['rsync', '-av', source_dir, dest_dir])
 
-subprocess.call(['rm', '-rf', base_dir])
+subprocess.run(['rm', '-rf', base_dir])
 
-subprocess.call(['make', 'docker.arm.down'])
-subprocess.call(['make', 'docker.arm.build'])
-subprocess.call(['make', 'docker.arm.up'])
+subprocess.run(['make', 'docker.arm.down'])
+subprocess.run(['make', 'docker.arm.build'])
+subprocess.run(['make', 'docker.arm.up'])
