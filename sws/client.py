@@ -3,7 +3,6 @@ import logging
 from threading import Thread, Lock
 
 from websocket import WebSocketApp
-from mongoengine.errors import ValidationError
 
 from bot.jack import JackBot
 from db.subject import Subject
@@ -80,7 +79,7 @@ class SessionWebSocket(Thread):
             sws.subject.notify(msg)
             sws.lock.release()
             logger.info(f'{sws.name} released lock!')
-        except (ValidationError, DuplicatedUpdateMessageError) as e:
+        except DuplicatedUpdateMessageError as e:
             logger.info(f"Supress {e} for creating {UpdateMessage} "
                         f"from {data} on {sws}")
 
