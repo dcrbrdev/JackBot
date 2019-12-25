@@ -1,4 +1,5 @@
 from json import loads
+from functools import reduce
 
 import pendulum
 from mongoengine import (
@@ -18,6 +19,11 @@ class Amount(EmbeddedDocument):
 
     def __str__(self):
         return f"{self.value} DCR"
+
+    def __add__(self, other):
+        if not isinstance(other, Amount):
+            raise TypeError('Cannot add!')
+        return Amount(self._value + other._value)
 
     def equal(self, other):
         if not isinstance(other, Amount):
@@ -41,12 +47,9 @@ class Session(EmbeddedDocument):
 
     def __str__(self):
         string = f"{self.hash[:32]}:\t["
-        total = 0
-        for index, amount in enumerate(self.amounts):
-            total += amount.value
-            string += f"{amount}"
-            string += ", " if index != len(self.amounts)-1 else "]"
-        string += f"\nTotal: {total} DCR"
+        string += ", ".join([f"{amount}" for amount in self.amounts])
+        total = reduce(lambda a, b: a+b, self.amounts, Amount(0))
+        string += f"]\nTotal: {total}"
         return string
 
     def equal(self, other):
@@ -81,11 +84,9 @@ class UpdateMessage(Document):
 
     def __str__(self):
         string = f"<b>{self.subject.header}</b>\n\n"
-        string += f"<i>Default session: {self.subject.default_session}</i>\n\n"
         string += f"Ticket price: {TicketPrice.get_last()}\n\n"
-        for index, msg in enumerate(self.sessions):
-            string += f"<code>{msg}</code>"
-            string += "\n\n" if index != len(self.sessions) - 1 else ""
+        string += f"<i>Default session: {self.subject.default_session}</i>\n\n"
+        string += "\n\n".join([f"<code>{session}</code>" for session in self.sessions])
         return string
 
     def equal(self, other):
