@@ -86,7 +86,8 @@ class UpdateMessage(Document):
         string = f"<b>{self.subject.header}</b>\n\n"
         string += f"Ticket price: {TicketPrice.get_last()}\n\n"
         string += f"<i>Default session: {self.subject.default_session}</i>\n\n"
-        string += "\n\n".join([f"<code>{session}</code>" for session in self.sessions])
+        string += "\n\n".join([f"<code>{session}</code>"
+                               for session in self.sessions])
         return string
 
     def equal(self, other):

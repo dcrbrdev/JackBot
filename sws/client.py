@@ -3,7 +3,6 @@ import logging
 from threading import Thread, Lock
 
 from websocket import WebSocketApp
-from mongoengine.errors import ValidationError
 
 from bot.jack import JackBot
 from db.subject import Subject

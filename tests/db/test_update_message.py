@@ -29,7 +29,8 @@ class UpdateMessageTestCase(TestCase):
     def test_init(self):
         self.assertEqual(UpdateMessage.objects.count(), 0)
 
-        UpdateMessage(self.subject, [Session('test', [Amount(1000000000)])]).save()
+        UpdateMessage(self.subject,
+                      [Session('test', [Amount(1000000000)])]).save()
         self.assertEqual(UpdateMessage.objects.count(), 1)
 
         instance = UpdateMessage.objects.first()
@@ -41,7 +42,8 @@ class UpdateMessageTestCase(TestCase):
         ticket_price = TicketPrice(10)
         mocked_get_last.return_value = ticket_price
 
-        instance = UpdateMessage(self.subject, [Session('test', [Amount(1000000000)])]).save()
+        instance = UpdateMessage(self.subject,
+                                 [Session('test', [Amount(1000000000)])]).save()
         self.assertEqual(instance.__str__(),
                          f"<b>🇧🇷 Decred Brasil</b>\n\n"
                          f"Ticket price: 10.00 DCR\n\n"
@@ -49,19 +51,24 @@ class UpdateMessageTestCase(TestCase):
                          f"<code>test:\t[10.0 DCR]\nTotal: 10.0 DCR</code>")
 
     def test_equal(self):
-        instance = UpdateMessage(self.subject, [Session('test', [Amount(1000000000)])])
-        other = UpdateMessage(self.subject, [Session('test', [Amount(1000000000)])])
+        instance = UpdateMessage(self.subject,
+                                 [Session('test', [Amount(1000000000)])])
+        other = UpdateMessage(self.subject,
+                              [Session('test', [Amount(1000000000)])])
 
         self.assertTrue(instance.equal(other))
 
     def test_equal_false(self):
-        instance = UpdateMessage(self.subject, [Session('test', [Amount(1000000000)])])
-        other = UpdateMessage(self.subject, [Session('test', [Amount(1100000000)])])
+        instance = UpdateMessage(self.subject,
+                                 [Session('test', [Amount(1000000000)])])
+        other = UpdateMessage(self.subject,
+                              [Session('test', [Amount(1100000000)])])
 
         self.assertFalse(instance.equal(other))
 
     def test_get_last_by_subject(self):
-        UpdateMessage(self.subject, [Session('test', [Amount(1000000000)])]).save()
+        UpdateMessage(self.subject, [Session('test',
+                                             [Amount(1000000000)])]).save()
         other = UpdateMessage(self.subject,
                               [Session('test', [Amount(1100000000)])]).save()
 
