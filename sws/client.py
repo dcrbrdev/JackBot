@@ -82,6 +82,11 @@ class SessionWebSocket(Thread):
         except DuplicatedUpdateMessageError as e:
             logger.info(f"Supress {e} for creating {UpdateMessage} "
                         f"from {data} on {sws}")
+        except Exception as e:
+            logger.error(e)
+        finally:
+            if sws.lock.locked():
+                sws.lock.release()
 
     @staticmethod
     def on_error(ws, error: Exception):
