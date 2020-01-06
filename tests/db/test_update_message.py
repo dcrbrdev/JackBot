@@ -1,6 +1,7 @@
 from unittest import TestCase, mock
 
 import pytest
+import pendulum
 
 from tests.fixtures import mongo  # noqa F401
 from db.update_message import UpdateMessage, Session, Amount
@@ -67,10 +68,12 @@ class UpdateMessageTestCase(TestCase):
         self.assertFalse(instance.equal(other))
 
     def test_get_last_by_subject(self):
-        UpdateMessage(self.subject, [Session('test',
-                                             [Amount(1000000000)])]).save()
+        UpdateMessage(self.subject,
+                      [Session('test', [Amount(1000000000)])],
+                      pendulum.yesterday()).save()
         other = UpdateMessage(self.subject,
-                              [Session('test', [Amount(1100000000)])]).save()
+                              [Session('test', [Amount(1100000000)])],
+                              pendulum.today()).save()
 
         last = UpdateMessage.get_last_by_subject(self.subject)
         self.assertEqual(other, last)
