@@ -5,8 +5,6 @@ from telegram.ext import CommandHandler, CallbackContext
 from mongoengine.errors import DoesNotExist, MultipleObjectsReturned
 
 from bot.core import BotTelegramCore
-from utils.utils import convert_dcr
-from utils.exceptions import DcrDataAPIError
 from db.subject import Subject
 from db.observer import UserObserver
 from db.update_message import UpdateMessage
@@ -42,8 +40,8 @@ def now(update: Update, context: CallbackContext):
                 errors.append(f"{name}: {e}")
             except MultipleObjectsReturned as e:
                 errors.append(f"{e}\n"
-                              f"The value {name} returned more than one subject. "
-                              f"Please be more specific!")
+                              f"The value {name} returned more than "
+                              f"one subject. Please be more specific!")
     else:
         subjects = Subject.objects.all()
 
