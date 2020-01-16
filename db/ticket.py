@@ -61,6 +61,7 @@ class TicketPrice(Document):
             last_ticket_price = cls._fetch_new_ticket_price()
         finally:
             last_ticket_price.save()
-            cls.lock.release()
+            if cls.lock.locked():
+                cls.lock.release()
 
         return last_ticket_price
