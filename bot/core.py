@@ -69,7 +69,8 @@ class BotTelegramCore(ABC):
             chat = instance.get_chat(chat_id)
         except TelegramError:
             chat = instance.chat
-        return chat.type == chat.PRIVATE or user_id in instance.get_administrators_ids(chat)
+        return (chat.type == chat.PRIVATE or
+                user_id in instance.get_administrators_ids(chat))
 
     @classmethod
     def send_message(cls, text, chat_id, parse_mode=None):
