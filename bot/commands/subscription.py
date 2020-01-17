@@ -6,6 +6,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CommandHandler, CallbackContext
 
 from bot.core import BotTelegramCore
+from bot.messages import ADMIN_RESTRICTED
 from utils.utils import build_menu
 from db.subject import Subject
 from db.observer import UserObserver
@@ -19,8 +20,13 @@ logger = logging.getLogger(__name__)
 
 
 def subscribe(update: Update, context: CallbackContext):
+    user = update.effective_user
     chat = update.effective_chat
     message = update.effective_message
+
+    if not BotTelegramCore.instance().is_admin(user.id, chat.id):
+        message.reply_text(ADMIN_RESTRICTED)
+        return
 
     try:
         observer = UserObserver.objects.get(chat_id=f"{chat.id}")
@@ -49,8 +55,13 @@ def subscribe(update: Update, context: CallbackContext):
 
 
 def unsubscribe(update: Update, context: CallbackContext):
+    user = update.effective_user
     chat = update.effective_chat
     message = update.effective_message
+
+    if not BotTelegramCore.instance().is_admin(user.id, chat.id):
+        message.reply_text(ADMIN_RESTRICTED)
+        return
 
     try:
         observer = UserObserver.objects.get(chat_id=f"{chat.id}")
@@ -79,8 +90,13 @@ def unsubscribe(update: Update, context: CallbackContext):
 
 
 def subscriptions(update: Update, context: CallbackContext):
+    user = update.effective_user
     chat = update.effective_chat
     message = update.effective_message
+
+    if not BotTelegramCore.instance().is_admin(user.id, chat.id):
+        message.reply_text(ADMIN_RESTRICTED)
+        return
 
     try:
         observer = UserObserver.objects.get(chat_id=f"{chat.id}")
