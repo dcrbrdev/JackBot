@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from decouple import config
 from telegram.ext import Updater, Handler
-from telegram import Update, ParseMode
+from telegram import Update, ParseMode, TelegramError
 
 
 logging.basicConfig(
@@ -49,20 +49,28 @@ class BotTelegramCore(ABC):
 
     @property
     def chat(self):
-        return self._updater.bot.get_chat(self.chat_id)
+        return self.get_chat(self.chat_id)
+
+    def get_chat(self, chat_id):
+        return self._updater.bot.get_chat(chat_id)
 
     def is_from_official_chat(self, update: Update):
         return self.chat_id == update.message.chat.id
 
-    @property
-    def administrators(self):
+    @staticmethod
+    def get_administrators_ids(chat):
         return [chat_member.user.id for
-                chat_member in self.chat.get_administrators()]
+                chat_member in chat.get_administrators()]
 
     @classmethod
-    def is_admin(cls, user_id):
+    def is_admin(cls, user_id, chat_id=None):
         instance = cls.instance()
-        return user_id in instance.administrators
+        try:
+            chat = instance.get_chat(chat_id)
+        except TelegramError:
+            chat = instance.chat
+        return (chat.type == chat.PRIVATE or
+                user_id in instance.get_administrators_ids(chat))
 
     @classmethod
     def send_message(cls, text, chat_id, parse_mode=None):
