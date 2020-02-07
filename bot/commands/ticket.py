@@ -39,13 +39,15 @@ def add_ticket(update: Update, context: CallbackContext):
 
     try:
         Ticket.objects.get(observer=observer, tx_id=tx_id)
-        message.reply_text(f"Ticket with transaction id {tx_id} is already registered!", parse_mode='HTML')
+        message.reply_text(f"Ticket with transaction id {tx_id}"
+                           f" is already registered!", parse_mode='HTML')
         return
     except DoesNotExist:
         ticket = Ticket(observer, tx_id)
 
     ticket.fetch()
-    message.reply_text(f"Ticket has been saved!\n\n{ticket.html}", parse_mode='HTML')
+    message.reply_text(f"Ticket has been saved!"
+                       f"\n\n{ticket.html}", parse_mode='HTML')
 
 
 def remove_ticket(update: Update, context: CallbackContext):
@@ -95,7 +97,8 @@ def list_tickets(update: Update, context: CallbackContext):
     tickets = Ticket.objects(observer=observer)
 
     if not tickets:
-        message.reply_text("<b>There are no watched tickets!</b>", parse_mode='HTML')
+        message.reply_text("<b>There are no watched tickets!"
+                           "</b>", parse_mode='HTML')
         return
 
     text = "<b>Watched tickets</b>\n\n"

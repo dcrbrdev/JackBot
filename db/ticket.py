@@ -131,11 +131,13 @@ class Ticket(Document):
 
     @property
     def tx_link(self):
-        return f"<a href='https://dcrdata.decred.org/tx/{self.tx_id}'>{self.tx_id}</a>"
+        return f"<a href='https://dcrdata.decred.org/tx/" \
+               f"{self.tx_id}'>{self.tx_id}</a>"
 
     @property
     def vote_link(self):
-        return f"<a href='https://dcrdata.decred.org/tx/{self.vote_id}'>{self.vote_id}</a>"
+        return f"<a href='https://dcrdata.decred.org/tx/" \
+               f"{self.vote_id}'>{self.vote_id}</a>"
 
     def notify(self):
         self.observer.send_message(self.html)
