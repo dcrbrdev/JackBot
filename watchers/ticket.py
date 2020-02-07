@@ -14,19 +14,14 @@ logger = logging.getLogger(__name__)
 
 
 class TicketWatcher(Thread):
-
-    @staticmethod
-    def process_ticket(ticket: Ticket):
-        logger.debug(f"Processing ticket {ticket}")
-        ticket.fetch()
-
     def run(self):
         while True:
             logger.info(f"Getting all tickets...")
             tickets = Ticket.objects.all()
             logger.debug(f"Tickets: {tickets}")
             for ticket in tickets:
-                self.process_ticket(ticket)
+                logger.debug(f"Fetching ticket {ticket}")
+                ticket.fetch()
 
             logger.info(f"Deleting all voted tickets...")
             Ticket.objects.filter(_status=Status.voted()).delete()
