@@ -162,5 +162,4 @@ class Ticket(Document):
             self.vote_id = data.get('vote')
 
         self.save()
-
         self.notify()

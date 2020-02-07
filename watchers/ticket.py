@@ -26,8 +26,8 @@ class TicketWatcher(Thread):
             logger.info(f"Deleting all voted tickets...")
             Ticket.objects.filter(_status=Status.voted()).delete()
 
-            logger.info(f"Sleeping for 1 minute...")
-            sleep(60)
+            logger.info(f"Sleeping for 1 hour...")
+            sleep(60*60)
 
 
 if __name__ == "__main__":
