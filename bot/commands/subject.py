@@ -5,6 +5,7 @@ from telegram.ext import CommandHandler, CallbackContext
 from mongoengine.errors import DoesNotExist, MultipleObjectsReturned
 
 from bot.core import BotTelegramCore
+from bot.messages import NOW_GROUP_RESTRICTED
 from db.subject import Subject
 from db.observer import UserObserver
 from db.update_message import UpdateMessage
@@ -20,6 +21,12 @@ logger = logging.getLogger(__name__)
 def now(update: Update, context: CallbackContext):
     chat = update.effective_chat
     message = update.effective_message
+
+    if not chat.type == "private":
+        available_vsps = "\n".join([subject.header for subject in Subject.objects.all()])
+        message.reply_text(NOW_GROUP_RESTRICTED, parse_mode='MARKDOWN')
+        message.reply_text(f"<b>Available VSP's are:</b>\n\n{available_vsps}", parse_mode='HTML')
+        return
 
     try:
         observer = UserObserver.objects.get(chat_id=f"{chat.id}")

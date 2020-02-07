@@ -5,3 +5,5 @@ HELP = "Having problem with something?\n" \
        "https://github.com/dcr-guys/JackBot/"
 
 ADMIN_RESTRICTED = "This command is restricted to admins only!"
+
+NOW_GROUP_RESTRICTED = "The command `/now` without args is restricted on groups! Please call `/now` with args"
