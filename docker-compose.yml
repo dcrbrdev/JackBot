@@ -25,12 +25,24 @@ services:
             - .:/bot
         env_file: .env
 
-    bot-worker:
+    session-watcher:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: bot-worker
-        command: python -m sws.client
+        container_name: session-watcher
+        command: python -m watchers.session
+        depends_on:
+            - mongo
+        volumes:
+            - .:/bot
+        env_file: .env
+
+    ticket-watcher:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: ticket-watcher
+        command: python -m watchers.ticket
         depends_on:
             - mongo
         volumes:

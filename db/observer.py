@@ -54,9 +54,12 @@ class Observer(Document):
         self._remove_last_message_from_subject(update_message.subject)
         self._send_update_message(update_message)
 
+    def send_message(self, message):
+        return BotTelegramCore.send_message(
+            f'{message}', chat_id=self.chat_id)
+
     def _send_update_message(self, update_message):
-        telegram_message = BotTelegramCore.send_message(
-            f'{update_message}', chat_id=self.chat_id)
+        telegram_message = self.send_message(update_message)
         self._create_message(telegram_message.message_id,
                              update_message.subject)
 

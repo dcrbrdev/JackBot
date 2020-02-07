@@ -5,3 +5,7 @@ HELP = "Having problem with something?\n" \
        "https://github.com/dcr-guys/JackBot/"
 
 ADMIN_RESTRICTED = "This command is restricted to admins only!"
+
+GROUP_RESTRICTED = "This command is restricted on groups!"
+
+TX_ID_ERROR = "Please pass a valid transaction id!"

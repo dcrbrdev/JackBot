@@ -5,8 +5,8 @@ from websocket import WebSocketApp
 
 from tests.fixtures import mongo  # noqa F401
 from db.subject import Subject
-from sws.client import SessionWebSocket
-from sws.exceptions import SessionWebSocketNotFoundError
+from watchers.session import SessionWebSocket
+from utils.exceptions import SessionWebSocketNotFoundError
 
 
 @pytest.mark.usefixtures('mongo')

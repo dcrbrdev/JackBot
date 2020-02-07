@@ -7,8 +7,9 @@ from websocket import WebSocketApp
 from bot.jack import JackBot
 from db.subject import Subject
 from db.update_message import UpdateMessage
-from utils.exceptions import DuplicatedUpdateMessageError
-from sws.exceptions import DuplicatedSessionError, SessionWebSocketNotFoundError
+from utils.exceptions import (
+    DuplicatedUpdateMessageError,
+    DuplicatedSessionError, SessionWebSocketNotFoundError)
 
 
 logging.basicConfig(
