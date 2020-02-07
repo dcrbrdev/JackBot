@@ -14,9 +14,8 @@ def build_menu(buttons,
 
 
 def convert_dcr(dcr_amount: float, target_currency: str):
-    endpoint = "exchanges"
-    dcr_to_usd_value = request_dcr_data(endpoint)
-    dcr_to_usd_value = dcr_to_usd_value.get("price")
+    endpoint = f"exchanges?code={target_currency}"
+    dcr_to_target_value = request_dcr_data(endpoint)
+    dcr_to_target_value = dcr_to_target_value.get("price")
 
-    if target_currency == 'USD':
-        return dcr_amount * dcr_to_usd_value
+    return dcr_amount * dcr_to_target_value
