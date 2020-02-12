@@ -6,4 +6,8 @@ HELP = "Having problem with something?\n" \
 
 ADMIN_RESTRICTED = "This command is restricted to admins only!"
 
-NOW_GROUP_RESTRICTED = "The command `/now` without args is restricted on groups! Please call `/now` with args"
+GROUP_RESTRICTED = "This command is restricted on groups!"
+
+CALL_NOW = "Please call `/now` with args"
+
+TX_ID_ERROR = "Please pass a valid transaction id!"

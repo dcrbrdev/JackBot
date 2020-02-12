@@ -61,10 +61,15 @@ docker.bot.stop:
 
 docker.bot.restart: docker.bot.stop docker.up
 
-docker.worker.stop:
-	sudo docker stop bot-worker
+docker.session_watcher.stop:
+	sudo docker stop session-watcher
 
-docker.worker.restart: docker.worker.stop docker.up
+docker.session_watcher.restart: docker.session_watcher.stop docker.up
+
+docker.ticket_watcher.stop:
+	sudo docker stop ticket-watcher
+
+docker.ticket_watcher.restart: docker.ticket_watcher.stop docker.up
 
 docker.volumes.remove: docker.down
 	sudo docker volume rm $(current_dir)_mongo_volume

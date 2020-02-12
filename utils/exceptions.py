@@ -13,3 +13,11 @@ class ObserverAlreadyRegisteredError(Exception):
 
 class DuplicatedUpdateMessageError(Exception):
     pass
+
+
+class DuplicatedSessionError(Exception):
+    pass
+
+
+class SessionWebSocketNotFoundError(Exception):
+    pass

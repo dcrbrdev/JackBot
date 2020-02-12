@@ -5,7 +5,7 @@ from telegram.ext import CommandHandler, CallbackContext
 from mongoengine.errors import DoesNotExist, MultipleObjectsReturned
 
 from bot.core import BotTelegramCore
-from bot.messages import NOW_GROUP_RESTRICTED
+from bot.messages import GROUP_RESTRICTED, CALL_NOW
 from db.subject import Subject
 from db.observer import UserObserver
 from db.update_message import UpdateMessage
@@ -25,7 +25,8 @@ def now(update: Update, context: CallbackContext):
     if not chat.type == "private":
         available_vsps = "\n".join([subject.header for
                                     subject in Subject.objects.all()])
-        message.reply_text(NOW_GROUP_RESTRICTED, parse_mode='MARKDOWN')
+        message.reply_text(f"{GROUP_RESTRICTED} {CALL_NOW}",
+                           parse_mode='MARKDOWN')
         message.reply_text(f"<b>Available VSP's are:</b>\n\n{available_vsps}",
                            parse_mode='HTML')
         return

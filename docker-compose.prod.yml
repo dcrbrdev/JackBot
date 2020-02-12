@@ -21,10 +21,10 @@ services:
             - mongo
         env_file: .env
 
-    bot-worker:
+    session-watcher:
         image: dcrguys/jack_bot
-        container_name: bot-worker
-        command: python -m sws.client
+        container_name: session-watcher
+        command: python -m watchers.session
         depends_on:
             - mongo
         env_file: .env
