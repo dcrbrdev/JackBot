@@ -46,8 +46,8 @@ def add_ticket(update: Update, context: CallbackContext):
         ticket = Ticket(observer, tx_id)
 
     if ticket.fetch():
-        message.reply_text(f"Ticket has been saved!"
-                           f"\n\n{ticket.html}", parse_mode='HTML')
+        message.reply_text(f"<b>Ticket has been saved!</b>",
+                           parse_mode='HTML')
 
 
 def remove_ticket(update: Update, context: CallbackContext):

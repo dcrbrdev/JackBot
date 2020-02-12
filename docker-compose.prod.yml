@@ -28,3 +28,11 @@ services:
         depends_on:
             - mongo
         env_file: .env
+
+    ticket-watcher:
+        image: dcrguys/jack_bot
+        container_name: ticket-watcher
+        command: python -m watchers.ticket
+        depends_on:
+            - mongo
+        env_file: .env
