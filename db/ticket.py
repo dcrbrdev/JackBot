@@ -6,6 +6,7 @@ from mongoengine import (
     Document, ReferenceField,
     FloatField, DateTimeField, StringField)
 
+from bot.messages import TX_ID_ERROR
 from db.observer import Observer
 from utils.dcrdata import request_dcr_data
 from utils.exceptions import DcrDataAPIError
@@ -149,6 +150,7 @@ class Ticket(Document):
         except DcrDataAPIError as e:
             self.delete()
             self.observer.send_message(e)
+            self.observer.send_message(TX_ID_ERROR)
             self.observer.send_message(f"Your ticket was removed!")
             return False
 
