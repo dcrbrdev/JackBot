@@ -25,7 +25,8 @@ def now(update: Update, context: CallbackContext):
     if not chat.type == "private":
         available_vsps = "\n".join([subject.header for
                                     subject in Subject.objects.all()])
-        message.reply_text(f"{GROUP_RESTRICTED} {CALL_NOW}", parse_mode='MARKDOWN')
+        message.reply_text(f"{GROUP_RESTRICTED} {CALL_NOW}",
+                           parse_mode='MARKDOWN')
         message.reply_text(f"<b>Available VSP's are:</b>\n\n{available_vsps}",
                            parse_mode='HTML')
         return
