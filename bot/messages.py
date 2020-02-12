@@ -8,4 +8,6 @@ ADMIN_RESTRICTED = "This command is restricted to admins only!"
 
 GROUP_RESTRICTED = "This command is restricted on groups!"
 
+CALL_NOW = "Please call `/now` with args"
+
 TX_ID_ERROR = "Please pass a valid transaction id!"
