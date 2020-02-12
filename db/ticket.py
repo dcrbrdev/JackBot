@@ -150,12 +150,12 @@ class Ticket(Document):
             self.delete()
             self.observer.send_message(e)
             self.observer.send_message(f"Your ticket was removed!")
-            return
+            return False
 
         status = data.get('status')
 
         if self.is_same_status(status):
-            return
+            return True
 
         self.status = status
         if self.status == Status.voted():
@@ -163,3 +163,4 @@ class Ticket(Document):
 
         self.save()
         self.notify()
+        return True
