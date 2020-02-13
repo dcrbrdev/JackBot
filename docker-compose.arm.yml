@@ -32,3 +32,13 @@ services:
         depends_on:
             - mongo
         env_file: .env
+
+    ticket-watcher:
+        build:
+            context: .
+            dockerfile: Dockerfile.arm
+        container_name: ticket-watcher
+        command: python -m watchers.ticket
+        depends_on:
+            - mongo
+        env_file: .env
