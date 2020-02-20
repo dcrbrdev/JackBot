@@ -4,7 +4,8 @@ from threading import Lock
 import pendulum
 from mongoengine import (
     Document, ReferenceField,
-    FloatField, DateTimeField, StringField)
+    FloatField, DateTimeField, StringField,
+    BooleanField, IntField)
 
 from bot.messages import TX_ID_ERROR
 from db.observer import Observer
@@ -103,12 +104,15 @@ class Ticket(Document):
     tx_id = StringField(max_length=64, required=True)
     _status = ReferenceField(Status)
     vote_id = StringField(max_length=64)
+    vote_block = IntField()
+    spendable = BooleanField(default=False)
 
     def __str__(self):
         message = f"tx {self.tx_id}\n" \
                   f"status: {self.status}"
         if self.vote_id:
             message += f"\nvote: {self.vote_id}"
+            message += f"\nspendable: {self.spendable}"
         return message
 
     @property
@@ -117,6 +121,7 @@ class Ticket(Document):
                   f"<b>status</b>: {self.status}"
         if self.vote_id:
             message += f"\n<b>vote</b>: {self.vote_link}"
+            message += f"\n<b>spendable</b>: {self.spendable}"
         return message
 
     def is_same_status(self, new_status_name):
