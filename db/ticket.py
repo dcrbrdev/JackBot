@@ -174,3 +174,11 @@ class Ticket(Document):
         self.save()
         self.notify()
         return True
+
+    @classmethod
+    def voted(cls):
+        return cls.objects.filter(_status=Status.voted())
+
+    @classmethod
+    def voted_and_expendable(cls):
+        return cls.voted().filter(spendable=True)
