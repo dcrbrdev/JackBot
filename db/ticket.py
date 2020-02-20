@@ -167,6 +167,9 @@ class Ticket(Document):
         self.status = status
         if self.status == Status.voted():
             self.vote_id = data.get('vote')
+            logger.debug(f"fetching vote {self}")
+            data = request_dcr_data(f"tx/{self.vote_id}/vinfo")
+            self.vote_block = data.get('block_validation').get('height')
 
         self.save()
         self.notify()
