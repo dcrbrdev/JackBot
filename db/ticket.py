@@ -175,6 +175,12 @@ class Ticket(Document):
         self.notify()
         return True
 
+    def change_spendable(self, new_block):
+        if (new_block - self.vote_block) >= 256:
+            self.spendable = True
+            self.save()
+            self.notify()
+
     @classmethod
     def voted(cls):
         return cls.objects.filter(_status=Status.voted())
