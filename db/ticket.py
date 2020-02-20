@@ -186,5 +186,5 @@ class Ticket(Document):
         return cls.objects.filter(_status=Status.voted())
 
     @classmethod
-    def voted_and_expendable(cls):
+    def voted_and_spendable(cls):
         return cls.voted().filter(spendable=True)
