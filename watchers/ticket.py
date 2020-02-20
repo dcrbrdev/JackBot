@@ -37,11 +37,10 @@ class TicketWatcher(Thread):
                 ticket.change_spendable(new_block)
 
             logger.info(f"Deleting all voted expendable tickets...")
-            logger.info(f"Deleting {Ticket.voted_and_spendable()}...")
             Ticket.voted_and_spendable().delete()
 
             logger.info(f"Sleeping for 1 hour...")
-            sleep(60)
+            sleep(60*60)
 
 
 if __name__ == "__main__":
