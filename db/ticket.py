@@ -4,7 +4,8 @@ from threading import Lock
 import pendulum
 from mongoengine import (
     Document, ReferenceField,
-    FloatField, DateTimeField, StringField)
+    FloatField, DateTimeField, StringField,
+    BooleanField, IntField)
 
 from bot.messages import TX_ID_ERROR
 from db.observer import Observer
@@ -103,12 +104,15 @@ class Ticket(Document):
     tx_id = StringField(max_length=64, required=True)
     _status = ReferenceField(Status)
     vote_id = StringField(max_length=64)
+    vote_block = IntField()
+    spendable = BooleanField(default=False)
 
     def __str__(self):
         message = f"tx {self.tx_id}\n" \
                   f"status: {self.status}"
         if self.vote_id:
             message += f"\nvote: {self.vote_id}"
+            message += f"\nspendable: {self.spendable}"
         return message
 
     @property
@@ -117,6 +121,7 @@ class Ticket(Document):
                   f"<b>status</b>: {self.status}"
         if self.vote_id:
             message += f"\n<b>vote</b>: {self.vote_link}"
+            message += f"\n<b>spendable</b>: {self.spendable}"
         return message
 
     def is_same_status(self, new_status_name):
@@ -162,7 +167,24 @@ class Ticket(Document):
         self.status = status
         if self.status == Status.voted():
             self.vote_id = data.get('vote')
+            logger.debug(f"fetching vote {self}")
+            data = request_dcr_data(f"tx/{self.vote_id}/vinfo")
+            self.vote_block = data.get('block_validation').get('height')
 
         self.save()
         self.notify()
         return True
+
+    def change_spendable(self, new_block):
+        if (new_block - self.vote_block) >= 256:
+            self.spendable = True
+            self.save()
+            self.notify()
+
+    @classmethod
+    def voted(cls):
+        return cls.objects.filter(_status=Status.voted())
+
+    @classmethod
+    def voted_and_spendable(cls):
+        return cls.voted().filter(spendable=True)
