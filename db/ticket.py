@@ -153,10 +153,8 @@ class Ticket(Document):
         try:
             data = request_dcr_data(f"tx/{self.tx_id}/tinfo")
         except DcrDataAPIError as e:
-            self.delete()
             self.observer.send_message(e)
-            self.observer.send_message(TX_ID_ERROR)
-            self.observer.send_message(f"Your ticket was removed!")
+            self.observer.send_message(f"Your ticket was not saved!")
             return False
 
         status = data.get('status')
