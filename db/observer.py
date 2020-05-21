@@ -101,9 +101,13 @@ class UserObserver(Observer):
             .objects(subject=subject,
                      observer=official_observer)\
             .order_by('-datetime').first()
-        telegram_message = BotTelegramCore.forward_message(
-            to_chat_id=self.chat_id,
-            from_chat_id=official_observer.chat_id,
-            message_id=last_official_message.message_id
-        )
-        self._create_message(telegram_message.message_id, subject)
+        try:
+            telegram_message = BotTelegramCore.forward_message(
+                to_chat_id=self.chat_id,
+                from_chat_id=official_observer.chat_id,
+                message_id=last_official_message.message_id
+            )
+            self._create_message(telegram_message.message_id, subject)
+        except BadRequest:
+            last_official_message.delete()
+            update_message.delete()
